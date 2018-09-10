@@ -1,30 +1,59 @@
 import React from 'react';
+import { createStackNavigator } from 'react-navigation'; // Version can be specified in package.json
 import { Animated, AppRegistry, StyleSheet, Text, View, Image, Button, ImageBackground } from 'react-native';
 const Myon = './jpeg/Myon.jpg';
 
+class HomeScreen extends React.Component {
+  render() {
+     return (
+    <View style={styles.container}>
+    <View style={styles.button}>
+      <View style={styles.newbutton}>
+      
+      </View>
+      <View style={styles.space}></View>
+      <View style={styles.optbutton}>
+           <Button
+       title="詳細ページへ"
+       onPress={() => this.props.navigation.navigate('Details')}
+     />
+      </View>
+    </View>
+    <View style={styles.bubble}>  
+      <View style={styles.table}>
+        <ImageBackground source={require (Myon)} style={styles.ImgMyon}>  
+          <Text style={styles.samples}>SAMPLE</Text>
+        </ImageBackground>  
+      </View>
+    </View>
+  </View>
+    );
+  }
+}
 
-export default class App extends React.Component {
+class DetailsScreen extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.button}>
-          <View style={styles.newbutton}></View>
-          <View style={styles.space}></View>
-          <View style={styles.optbutton}></View>
-        </View>
-        <View style={styles.bubble}>  
-          <View style={styles.table}>
-            <ImageBackground source={require (Myon)} style={styles.ImgMyon}>  
-              <Text style={styles.samples}>SAMPLE</Text>
-            </ImageBackground>  
-          </View>
-        </View>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>詳細ページ</Text>
       </View>
     );
   }
 }
 
-
+const RootStack = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+    },
+    Details: {
+      screen: DetailsScreen,
+    },
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -82,3 +111,10 @@ const styles = StyleSheet.create({
     color: 'red'
   },
 });
+
+export default class App extends React.Component {
+  render() {
+    return <RootStack />;
+  }
+}
+
