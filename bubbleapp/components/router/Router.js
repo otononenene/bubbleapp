@@ -118,7 +118,7 @@ export const Drawer = createDrawerNavigator({
     }
 );
 
-export default class Router extends React.Component {
+export default class App extends React.Component {
     render() {
     return <RootStack />;
     }
