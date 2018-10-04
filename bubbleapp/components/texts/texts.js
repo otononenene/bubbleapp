@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native'
 
-export class Weather extends React.Component{
+export class Texts extends React.Component{
     render() {
         return (
           <View/>
@@ -9,7 +9,7 @@ export class Weather extends React.Component{
     }
 }
 
-export class OptWeather extends React.Component{
+export class OptTexts extends React.Component{
     render() {
         return (
           <View/>
