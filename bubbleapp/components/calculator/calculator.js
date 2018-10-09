@@ -1,11 +1,28 @@
 import React,{Component} from 'react';
 import {StyleSheet, Text, View, Image, Button, ImageBackground } from 'react-native';
 
-export default class Calculator extends Component {
+class Calculator extends Component {
     constructor(props) {
         super(props);
-        this.state = {result: null};
-      }
+        this.state = {
+            result: 0,
+            x1: 0,
+            x2: 0,
+        };
+    }
+
+    static navigationOptions = {
+        title: 'Caluculater',
+        headerStyle: {
+            backgroundColor: 'red'
+        },
+        headerRight: (
+            <Button
+                title="Option"
+                onPress={() => this.props.navigation.navigate('OptCaluculater')}
+            />
+        ),
+    };
 
     render() {
       return (
@@ -16,9 +33,7 @@ export default class Calculator extends Component {
             <View style={styles.col}>
                 <View style={styles.row}>
                     <View>
-                        <Button>
-                    
-                        </Button>
+
                     </View>
                 </View>
             <View style={styles.row}>
@@ -34,6 +49,11 @@ export default class Calculator extends Component {
 }
 
 export class OptCalculator extends React.Component {
+    static navigationOptions = {
+        headerMode: 'float',
+        title: 'OptCaluculater',
+    };
+
     render() {
       return (
         <View style={styles.container}>
@@ -43,9 +63,7 @@ export class OptCalculator extends React.Component {
             <View style={styles.col}>
                 <View style={styles.row}>
                     <View>
-                        <Button>
-                    
-                        </Button>
+
                     </View>
                 </View>
             <View style={styles.row}>
@@ -60,7 +78,7 @@ export class OptCalculator extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     container: {
       flexDirection: 'column',
       flex: 1,
@@ -75,4 +93,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         flex: 1/3,
     },
+    result: {
+        flex: 1,
+    }
 });
+
+export default Calculator;
