@@ -1,5 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD:bubbleapp/bubbleapp/components/home/home.js
 import { DrawerActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {StyleSheet, Button, Text, View, ImageBackground } from 'react-native';
@@ -14,13 +13,9 @@ export default class Home extends React.Component {
           onPress={()=>{navigation.navigate('DrawerOpen')}} />
       ),
   };
-=======
-import RouterStack from './components/router/Router.js'
->>>>>>> d3218f951e638d951c084b48e935cc8a00b2bb02:bubbleapp/App.js
 
   render() {
     return (
-<<<<<<< HEAD:bubbleapp/bubbleapp/components/home/home.js
       <View style={styles.container}>
         <View style={styles.button}>
           <View style={styles.reftbutton}>
@@ -104,9 +99,3 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
 });
-=======
-      <RouterStack/>
-    );
-  }
-}
->>>>>>> d3218f951e638d951c084b48e935cc8a00b2bb02:bubbleapp/App.js

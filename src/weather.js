@@ -6,7 +6,7 @@ import AssetExample from './components/AssetExample';
 // or any pure javascript modules available in npm
 import { Card } from 'react-native-elements'; // 0.18.5
 import { ActivityIndicator, Text, View  } from 'react-native';
-export  class Weather extends Component {
+export default class App extends Component {
 //state = { movies: [] };
 constructor(props) {
     super(props)
