@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {StyleSheet, Text, View, Image, Button, ImageBackground } from 'react-native';
 
-class Calculator extends Component {
+export class Calculator extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -78,7 +78,7 @@ export class OptCalculator extends React.Component {
     }
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
       flexDirection: 'column',
       flex: 1,
@@ -97,5 +97,3 @@ export const styles = StyleSheet.create({
         flex: 1,
     }
 });
-
-export default Calculator;

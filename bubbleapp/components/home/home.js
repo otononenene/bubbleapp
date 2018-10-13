@@ -1,33 +1,28 @@
 import React from 'react';
-<<<<<<< HEAD:bubbleapp/bubbleapp/components/home/home.js
-import { DrawerActions } from 'react-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {StyleSheet, Button, Text, View, ImageBackground } from 'react-native';
+import {} from 'react-navigation';
+import {StyleSheet, Button, Text, View, ImageBackground, StatusBar } from 'react-native';
+import {DrawerButton} from '../router/Router.js'
 const Myon = './pictures/Myon.jpg';
 
 export default class Home extends React.Component {
   static navigationOptions = {
-    title: 'Home',
-    headerLeft: (
-        <Icon name="bars" size={24}
-          //style={styles.Menu}
-          onPress={()=>{navigation.navigate('DrawerOpen')}} />
-      ),
+    header: null,
+    //title: 'Home',
+    //headerLeft: () => <DrawerButton/>,
   };
-=======
-import RouterStack from './components/router/Router.js'
->>>>>>> d3218f951e638d951c084b48e935cc8a00b2bb02:bubbleapp/App.js
 
   render() {
     return (
-<<<<<<< HEAD:bubbleapp/bubbleapp/components/home/home.js
       <View style={styles.container}>
+      <StatusBar hidden={true}/>
         <View style={styles.button}>
           <View style={styles.reftbutton}>
-            <Button title="バブル" onPress={() => this.props.navigation.navigate('DrawerOpen')} style={styles.TxtMenu}/>
+            <DrawerButton/>
           </View>
           <View style={styles.space}></View>
-          <View style={styles.rightbutton}></View>
+          <View style={styles.rightbutton}>
+            <DrawerButton/>
+          </View>
         </View>
         <View style={styles.bubble}>  
           <View style={styles.table}>
@@ -49,8 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    marginTop: 20,
-    flex: 0.75,
+    flex: 0.95,
     backgroundColor: 'white',
     flexDirection: 'row'
   },
@@ -100,13 +94,4 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     fontSize: 30,
   },
-  Menu: {
-    marginLeft: 16,
-  },
 });
-=======
-      <RouterStack/>
-    );
-  }
-}
->>>>>>> d3218f951e638d951c084b48e935cc8a00b2bb02:bubbleapp/App.js
