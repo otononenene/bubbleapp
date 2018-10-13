@@ -1,7 +1,7 @@
 import React, { Component ,ActivityIndicator} from 'react';
 import {  ScrollView, StyleSheet,Picker } from 'react-native';
 import {  Text, View  } from 'react-native';
-export  default class Weather extends Component {
+export   class Weather extends Component {
 //state = { movies: [] };
 constructor(props) {
     super(props)
