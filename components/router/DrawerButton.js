@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
                     name="bars"
                     size={45}
                     style={styles.Menu}
-                    onPress={()=> this.props.navigation.navigate('StackCalculator')}
+                    onPress={()=> this.props.navigation.navigate(this.props.dest)}
                 />
             </View>
     )}

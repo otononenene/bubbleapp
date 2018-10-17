@@ -13,23 +13,18 @@ export default class Home extends React.Component {
     //title: 'Home',
     //headerLeft: () => <DrawerButton/>,
   };
-
   render() {
     return (
       <View style={styles.container}>
       <StatusBar hidden={true}/>
         <View style={styles.button}>
           <View style={styles.reftbutton}>
-          <View>
-          <Button
-            title="詳細ページへ"
-            onPress={() => this.props.navigation.navigate('StackCalculator')}
-          />
+            <View>
             </View>
           </View>
           <View style={styles.space}></View>
           <View style={styles.rightbutton}>
-            <DrawerButton/>
+            <DrawerButton dest={'StackCalculator'}/>
           </View>
         </View>
         <View style={styles.bubble}>  
