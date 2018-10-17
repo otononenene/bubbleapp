@@ -10,6 +10,7 @@ import {Weather, OptWeather} from '../weather/weather.js';
 import {Calendar, OptCalendar} from '../calendar/calendar.js';
 import Home from '../home/home.js';
 import {Texts, OptTexts} from '../texts/texts.js';
+import {withNavigation} from 'react-navigation'
 
 import Menu from './Headerbuttons'
 
@@ -21,8 +22,7 @@ export class DrawerButton extends React.Component{
                     name="bars"
                     size={45}
                     style={styles.Menu}
-                    navigation = {this.props.navigation}
-                    onPress={()=> this.props.navigation.navigate('Calclator')}
+                    onPress={()=> this.props.navigation.navigate('StackCalculator')}
                 />
             </View>
     )}

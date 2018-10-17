@@ -49,8 +49,8 @@ export class Add extends React.Component{
                     title='追加'
                     size={45}
                     style={styles.Menu}
-                    navigation = {this.props.navigation}
-                    onPress={()=> this.props.navigation.navigate('Home')}
+                    navigation = {props.navigation}
+                    onPress={()=> props.navigation.navigate('Home')}
                 />
             </View>
     )}
@@ -81,3 +81,4 @@ const styles=StyleSheet.create({
         marginLeft: 20,
       },
 });
+

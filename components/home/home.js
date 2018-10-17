@@ -1,7 +1,10 @@
 import React from 'react';
 import {} from 'react-navigation';
 import {StyleSheet, Button, Text, View, ImageBackground, StatusBar } from 'react-native';
-import {DrawerButton} from '../router/Router.js'
+import DrawerButton from '../router/DrawerButton'
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 const Myon = './pictures/Myon.jpg';
 
 export default class Home extends React.Component {
@@ -17,7 +20,12 @@ export default class Home extends React.Component {
       <StatusBar hidden={true}/>
         <View style={styles.button}>
           <View style={styles.reftbutton}>
-            <DrawerButton/>
+          <View>
+          <Button
+            title="詳細ページへ"
+            onPress={() => this.props.navigation.navigate('StackCalculator')}
+          />
+            </View>
           </View>
           <View style={styles.space}></View>
           <View style={styles.rightbutton}>
