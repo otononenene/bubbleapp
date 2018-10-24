@@ -10,9 +10,6 @@ import {Weather, OptWeather} from '../weather/weather.js';
 import {Calendar, OptCalendar} from '../calendar/calendar.js';
 import Home from '../home/home.js';
 import {Texts, OptTexts} from '../texts/texts.js';
-import {withNavigation} from 'react-navigation'
-
-import Menu from './Headerbuttons'
 
 export class DrawerButton extends React.Component{
     render(){
@@ -58,7 +55,7 @@ const CameraStack = createStackNavigator(
         StackCamera: {screen: Camera},
         OptCamera: {screen: OptCamera},
     },{
-        initialRouteName: "StackCamera",
+        initialRouteName: "OptCamera",
         headerMode: 'none',
         navigationOptions: {
             headerVisible: false,

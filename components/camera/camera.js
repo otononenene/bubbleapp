@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Button, Image, StatusBar } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
-import {Add} from '../router/Headerbuttons.js'
+import DrawerButton from '../router/DrawerButton'
 
 export class Camera extends React.Component{
     constructor(){
@@ -36,11 +36,10 @@ export class Camera extends React.Component{
                 <StatusBar hidden={true}/>
                 <View style={styles.button}>
                     <View style={styles.leftbutton}>
-
+                        <DrawerButton dest={'StackHome'}/>
                     </View>
                     <View style={styles.space}></View>
                     <View style={styles.rightbutton}>
-                        <Add/>
                     </View>
                 </View>
                 <View style={styles.bubble}>  
@@ -75,11 +74,11 @@ export class OptCamera extends React.Component{
             <StatusBar hidden={true}/>
               <View style={styles.button}>
                 <View style={styles.leftbutton}>
-                  
+                    <DrawerButton dest={'StackHome'}/>
                 </View>
                 <View style={styles.space}></View>
                 <View style={styles.rightbutton}>
-                  
+                    <DrawerButton dest={'StackCamera'}/>
                 </View>
               </View>
               <View style={styles.bubble}>  
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
     },
     button: {
       flex: 1,
-      backgroundColor: 'white',
+      backgroundColor: 'blue',
       flexDirection: 'row'
     },
     leftbutton: {
@@ -121,6 +120,6 @@ const styles = StyleSheet.create({
     },
     bubble: {
       flex: 9,
-      backgroundColor: 'red',
+      backgroundColor: 'green',
     },
   });
