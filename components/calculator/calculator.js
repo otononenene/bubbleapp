@@ -2,6 +2,7 @@ import React from 'React';
 import {View, Text, StyleSheet,ImageBackground } from 'react-native'
 //import { WSATYPE_NOT_FOUND } from 'constants';
 const Circle='./circle.png';
+
 export class Calculator extends React.Component {
     constructor(props){
         super(props);
@@ -27,70 +28,65 @@ export class Calculator extends React.Component {
     render() {
       return (
         <View style={styles.container}>
-          <View style={styles.button}>
-            <View style={styles.leftbutton}>
+            <View style={styles.button}>
+                <View style={styles.leftbutton}>
+                </View>
+                <View style={styles.space}></View>
+                <View style={styles.rightbutton}>
+                </View>
             </View>
-            <View style={styles.space}></View>
-            <View style={styles.rightbutton}>
-            </View>
-          </View>
-          <View style={styles.result}></View>
-          <View style={styles.table}> 
-            <View style={styles.Row}>
-            {this.moji0.map((value,index)=>{
+
+            <View style={styles.table}> 
+                <View style={styles.result}></View>
+                <View style={styles.Row}>
+                    {this.moji0.map((value,index)=>{
                         return(
+                            <View style={styles.node}>
+                                <ImageBackground key={index} source={require (Circle)} style={styles.CircleButton}>
+                                    <Text style={styles.text}>{value}</Text>
+                                </ImageBackground>
+                            </View>
+                            );
+
+                        })}
+                </View>
+                <View style={styles.Row}>
+                    {this.moji1.map((value,index)=>{
+                        return(
+                            <View style={styles.node}>
                             <ImageBackground key={index} source={require (Circle)} style={styles.CircleButton}>
-                            <Text style={styles.text}>{value}</Text>
+                                <Text style={styles.text}>{value}</Text>
                            </ImageBackground>
-                        )
-
-                    })
-                
-            
-                }
-            </View>
-            <View style={styles.Row}>
-            {this.moji1.map((value,index)=>{
-                         return(
-                            <ImageBackground key={index} source={require (Circle)} style={styles.CircleButton}>
-                            <Text style={styles.text}>{value}</Text>
-                           </ImageBackground>
-                        )
-
-                    })
-                
-            
-                }
-            </View>
-            <View style={styles.Row}>
-            {this.moji2.map((value,index)=>{
+                           </View>
+                        );
+                    })}
+                </View>
+                <View style={styles.Row}>
+                    {this.moji2.map((value,index)=>{
                         return(
-                            <ImageBackground key={index} source={require (Circle)} style={styles.CircleButton}>
-                             <Text style={styles.text}>{value}</Text>
-                            </ImageBackground>
-                        )
-
-                    })
-                
-            
-                }
-            </View>
-            <View style={styles.Row}>
-            {this.moji3.map((value,index)=>{
-                        return(
+                            <View style={styles.node}>
                             <ImageBackground key={index} source={require (Circle)} style={styles.CircleButton}>
                                 <Text style={styles.text}>{value}</Text>
                             </ImageBackground>
-                        )
-
-                    })
-                
-            
-                }
+                            </View>
+                        );
+                    })}
+                </View>
+                <View style={styles.Row}>
+                    {this.moji3.map((value,index)=>{
+                        return(
+                            <View style={styles.node}>
+                            <ImageBackground key={index} source={require (Circle)} style={styles.CircleButton}>
+                                <Text style={styles.text}>{value}</Text>
+                            </ImageBackground>
+                            </View>
+                        );
+                    })}
+                </View>
+                <View style={styles.Row}>
+                <View style={styles.node}></View>
+                </View>
             </View>
-            <View style={styles.Row}>
-            </View>
-          </View>
         </View>
       );
     }
@@ -105,7 +101,7 @@ const styles = StyleSheet.create({
     },
     button: {
       marginTop: 20,
-      flex: 0.75,
+      flex: 1,
       backgroundColor: 'white',
       flexDirection: 'row'
     },
@@ -117,7 +113,7 @@ const styles = StyleSheet.create({
       flex: 2,
     },
     result:{
-        flex:2
+        flex:1.4,
     },
     rightbutton: {
       flex: 1,
@@ -126,26 +122,41 @@ const styles = StyleSheet.create({
     table: {
       flex: 9,
       backgroundColor: 'blue',
-      flexDirection:'column',
-      flexWrap:'wrap'
+      
+    },
+    calbutton: {
+        flex: 7,
+        flexDirection:'column',
+        flexWrap:'wrap',
     },
     Row:{
-        flex:1,
-        flexDirection:'row'
+        flex:1.1,
+        flexDirection:'row',
+        backgroundColor: 'green',
     },
     CircleButton:{
         flex:1,
-        backgroundColor:'red'
+        padding: 2,
+        
     },
     text:{
         flex:1,
-        //alignItems:'center',
-        //justifyContent:'justify',
+        
+        justifyContent:'justify',
         //alignItems:'center'
         textAlign:'justify'
     },
     ImageBackground:{
+        padding: 5,
         flex:1
+    },
+    node: {
+        borderWidth: 2,
+        borderColor: 'green',
+        padding: 5,
+        flex: 1,
+        //justifyContent: 'center',
+        //alignItems:'center',
     }
 });
   

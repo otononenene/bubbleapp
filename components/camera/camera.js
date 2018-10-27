@@ -1,25 +1,55 @@
 import React from 'react';
-import { StyleSheet, View, Button, Image, StatusBar } from 'react-native';
+import { StyleSheet, View, Button, Image, StatusBar, Text } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
-import DrawerButton from '../router/DrawerButton'
-import {List} from '../list/list.js'
+import DrawerButton from '../router/DrawerButton';
+import {List} from '../list/list.js';
+import PropTypes from 'prop-types';
 
-export class Camera extends React.Component{
+const propTypes = {
+    ImgSource: PropTypes.func,
+}
+
+export class Check extends React.Component{
+    render(){
+        if(this.props.photo == null){
+            return(
+                <View style={styles.container}>
+                    <Text>null</Text>
+                </View>
+            );
+        }
+        return(
+            <View style={styles.container}>
+                <Text>{this.props.photo.uri}</Text>
+            </View>
+        );
+    }
+}
+
+export class OptCamera extends React.Component{
     constructor(){
         super();
         this.state = {
             hasCameraRollPermission: null,
-            photo: null
+            photo: null,
         }
     };
 
     static navigationOptions = {
-        title: 'Camera',
-        //drawerIcon: <Icon/>,
         header: null,
-        //title: 'Camera',
+        //title: 'OptCamera',
         //headerLeft: () => <DrawerButton/>,
     };
+
+    callBack(PhotoImg){
+        this.setState({photo: PhotoImg});
+    }
+
+    _getImg = () => {
+        // Image Pickerを起動する　画像選択画面
+        let result = ImagePicker.launchImageLibraryAsync();
+        this.setState({ photo: result });
+    }
 
     async componentWillMount() {
         // カメラロールに対するPermissionを許可
@@ -27,49 +57,8 @@ export class Camera extends React.Component{
         this.setState({ hasCameraRollPermission: status === 'granted' });
     }
 
-    static PhotoImg = { uri: this.photo};
-
     render() {
-        let { hasCameraRollPermission, photo } = this.state;
-        console.log(this.state);
-        return (
-            <View style={styles.container}>
-                <StatusBar hidden={true}/>
-                <View style={styles.button}>
-                    <View style={styles.leftbutton}>
-                        <DrawerButton dest={'DrawerHome'}/>
-                    </View>
-                    <View style={styles.space}></View>
-                    <View style={styles.rightbutton}>
-                    </View>
-                </View>
-                <View style={styles.bubble}>  
-                    <View style={styles.container}>
-                        {hasCameraRollPermission && photo && 
-                        <Image style={styles.image} source={{ uri: photo.uri }} />}
-                        <Button style={styles.button}
-                                title={"open Image Picker."}
-                                onPress={async () => {
-                                // Image Pickerを起動する
-                                let result = await ImagePicker.launchImageLibraryAsync();
-                                console.log(result);
-                                this.setState({ photo: result });
-                                }}
-                        />
-                    </View>
-                </View>
-            </View>
-        );
-    }
-}
-
-export class OptCamera extends React.Component{
-    static navigationOptions = {
-        header: null,
-        //title: 'OptCamera',
-        //headerLeft: () => <DrawerButton/>,
-    };
-    render() {
+        <Camera ImgSource={(PhotoImg) => {this.callBack(PhotoImg); }}></Camera>
         return (
             <View style={styles.container}>
             <StatusBar hidden={true}/>
@@ -83,12 +72,68 @@ export class OptCamera extends React.Component{
                     </View>
                 </View>
                 <View style={styles.bubble}>  
-                    <List texts="aiueo"/>
+                    <List Texts="選択画像ー＞" Title="select" onPress={this._getImg}/>
+                    <List Texts="意味のない" Title="項目"/>
+                    <Check photo={this.state.photo}/>
                 </View>
             </View>
         );
     }
 }
+
+export class Camera extends React.Component{
+    constructor(){
+        super();
+    };
+
+    static navigationOptions = {
+        title: 'Camera',
+        //drawerIcon: <Icon/>,
+        header: null,
+        //title: 'Camera',
+        //headerLeft: () => <DrawerButton/>,
+    };
+
+    Imgreturn(Img){
+        return this.props.ImgSource(Img);
+    }
+
+    
+
+    render() {
+        //let { hasCameraRollPermission, photo } = this.state;
+        //console.log(this.state);
+        return (
+            <View style={styles.container}>
+                <StatusBar hidden={true}/>
+                <View style={styles.button}>
+                    <View style={styles.leftbutton}>
+                        <DrawerButton dest={'DrawerHome'}/>
+                    </View>
+                    <View style={styles.space}></View>
+                    <View style={styles.rightbutton}>
+                    </View>
+                </View>
+                <View style={styles.bubble}>  
+                    <View style={styles.container}>
+                        {this.props.photo && 
+                        <Image style={styles.image} source={{ uri: this.props.photo.uri }} />}
+                        <Button style={styles.button}
+                                title={"open Image Picker."}
+                                onPress={async () => {
+                                // Image Pickerを起動する
+                                let result = await ImagePicker.launchImageLibraryAsync();
+                                this.Imgreturn(result);
+                                }}
+                        />
+                    </View>
+                </View>
+            </View>
+        );
+    }
+}
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -122,3 +167,5 @@ const styles = StyleSheet.create({
       backgroundColor: 'green',
     },
 });
+
+Camera.propTypes = propTypes;
