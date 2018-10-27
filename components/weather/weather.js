@@ -1,9 +1,9 @@
 import React, { Component ,ActivityIndicator} from 'react';
 
-import {  ScrollView, StyleSheet,Picker } from 'react-native';
+import {  Button,ScrollView, StyleSheet,Picker } from 'react-native';
 
 import {  Text, View  } from 'react-native';
-
+import {API_key} from './WeatherAPIKey'
 export   class Weather extends Component {
 
 //state = { movies: [] };
@@ -22,7 +22,9 @@ constructor(props) {
 
                   {name:'福岡',id:1863967}]
 
-    this.OpenWeatherMapKey = "a7d4d9333ffb3e2e2ca1affd07dd9277"
+    this.OpenWeatherMapKey = API_key
+    this.place = this.Places[0] 
+
 
 }
 
@@ -30,14 +32,21 @@ selectPlace(index) {
 
     if (index > 0) {
 
-      const place = this.Places[index - 1]
+      this.place = this.Places[index - 1]
 
-      this.setState({placeName: place.name, weather: null, temperature: null, loading: true})
+    //  this.setState({placeName: place.name, weather: null, temperature: null, loading: false})
 
-      this.getWeather(place.id)
+    //this.getWeather(place.id)
 
     }
 
+  }
+  setLoading(){
+    this.setState(
+        {placeName:this.place.name},
+        {loadging:false}
+    )
+    this.getWeather(this.place.id)
   }
 
   getWeather(id) {
@@ -87,7 +96,7 @@ selectPlace(index) {
 
 
   render() {
-
+    //選択した都道府県の天気予報を表示する画面
     if(this.state.loading){
 
       return(
@@ -105,6 +114,7 @@ selectPlace(index) {
       )
 
     }
+    //都道府県を選択する画面   
 
     else{
 
@@ -114,7 +124,7 @@ selectPlace(index) {
 
         <Text style={styles.title}>
 
-            {this.state.place ? this.state.place + 'の天気' : '天気情報'}
+            { '天気情報'}
 
         </Text>
 
@@ -124,14 +134,17 @@ selectPlace(index) {
 
             onValueChange={(selectItem)=>{this.selectPlace(selectItem+1)}  }
 
-            selectedValue={this.Places.Name}
+            selectedValue={this.place.id}
 
         >
 
                 {this.Places.map((place, ix) => <Picker.Item key={ix} value={ix} label={place.name} />)}       
 
         </Picker>
-
+        <Button
+            title="選択"
+            onPress={()=>this.setLoading()}
+        />
     </View>
 
         );
