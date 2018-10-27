@@ -19,13 +19,14 @@ export default class Home extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.button}>
-            <View style={styles.reftbutton}>
+            <View style={styles.leftbutton}>
             </View>
             <View style={styles.space}></View>
             <View style={styles.rightbutton}>
             </View>
           </View>
           <View style={styles.bubble}>  
+
           </View>
         </View>
       );
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       flexDirection: 'row'
     },
-    reftbutton: {
+    leftbutton: {
       flex: 1,
       backgroundColor: 'pink',
     },

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Button, Image, StatusBar } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
 import DrawerButton from '../router/DrawerButton'
+import {List} from '../list/list.js'
 
 export class Camera extends React.Component{
     constructor(){
@@ -36,7 +37,7 @@ export class Camera extends React.Component{
                 <StatusBar hidden={true}/>
                 <View style={styles.button}>
                     <View style={styles.leftbutton}>
-                        <DrawerButton dest={'StackHome'}/>
+                        <DrawerButton dest={'DrawerHome'}/>
                     </View>
                     <View style={styles.space}></View>
                     <View style={styles.rightbutton}>
@@ -72,20 +73,18 @@ export class OptCamera extends React.Component{
         return (
             <View style={styles.container}>
             <StatusBar hidden={true}/>
-              <View style={styles.button}>
-                <View style={styles.leftbutton}>
-                    <DrawerButton dest={'StackHome'}/>
+                <View style={styles.button}>
+                    <View style={styles.leftbutton}>
+                        <DrawerButton dest={'DrawerHome'}/>
+                    </View>
+                    <View style={styles.space}></View>
+                    <View style={styles.rightbutton}>
+                        <DrawerButton dest={'StackCamera'}/>
+                    </View>
                 </View>
-                <View style={styles.space}></View>
-                <View style={styles.rightbutton}>
-                    <DrawerButton dest={'StackCamera'}/>
+                <View style={styles.bubble}>  
+                    <List texts="aiueo"/>
                 </View>
-              </View>
-              <View style={styles.bubble}>  
-                <View style={styles.table}>
-                    
-                </View>
-              </View>
             </View>
         );
     }
@@ -122,4 +121,4 @@ const styles = StyleSheet.create({
       flex: 9,
       backgroundColor: 'green',
     },
-  });
+});
