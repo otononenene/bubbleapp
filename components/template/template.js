@@ -1,7 +1,12 @@
 import React from 'React';
-import {View, Text, StyleSheet, } from 'react-native'
+import {View, Text, StyleSheet, ScrollView } from 'react-native'
+import {List} from '../list/list.js';
 
 export default class Home extends React.Component {
+
+    /*STATE
+    **
+    */
     constructor(props){
         super(props);
         this.state = {
@@ -33,6 +38,64 @@ export default class Home extends React.Component {
     }
 }
 
+export default class Opt extends React.Component {
+  constructor(props){
+      super(props);
+      this.state = {
+
+      };
+  }
+
+  //ヘッダー設定
+  static navigationOptions = ({ navigation }) => {
+    return {
+       header: () => null
+    } 
+  }
+
+  //描画
+  render() {
+    return (
+      <View style={styles.container}>
+
+        {/*ヘッダーエリア*/}
+        <View style={styles.button}>
+
+          {/*左ボタン*/}
+          <View style={styles.leftbutton}>
+          </View>
+
+          {/*中央空白*/}
+          <View style={styles.space}></View>
+
+          {/*右ボタン*/}
+          <View style={styles.rightbutton}>
+          </View>
+
+        </View>
+
+        {/*フィールドエリア*/}
+        <View style={styles.table}>
+
+          {/*スクロールエリア*/}
+          <ScrollView showsVerticalScrollIndicator={false}>
+
+            {/*ページA*/}
+            <ComponentA/>
+            {/*ページB*/}
+            <ComponentB/>
+            {/*ページC*/}
+            <ComponentC/>
+            {/*ページD*/}
+            <ComponentD/>
+            
+          </ScrollView>
+        </View>
+      </View>
+    );
+  }
+}
+
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'column',
@@ -57,7 +120,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: 'pink',
     },
-    bubble: {
+    table: {
       flex: 9,
       backgroundColor: 'red',
     },

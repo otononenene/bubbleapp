@@ -1,58 +1,32 @@
 import React from 'react';
-import { StyleSheet, View, Button, Image, StatusBar, Text } from 'react-native';
+import { StyleSheet, View, Button, Image, StatusBar, Text, ScrollView } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
 import DrawerButton from '../router/DrawerButton';
 import {List} from '../list/list.js';
-import PropTypes from 'prop-types';
-
-const propTypes = {
-    ImgSource: PropTypes.func,
-}
-
-export class Check extends React.Component{
-    render(){
-        if(this.props.photo == null){
-            return(
-                <View style={styles.container}>
-                    <Text>null</Text>
-                </View>
-            );
-        }
-        return(
-            <View style={styles.container}>
-                <Text>{this.props.photo.uri}</Text>
-            </View>
-        );
-    }
-}
 
 export class OptCamera extends React.Component{
+
+    /*STATE
+    **hasCameraRollPermission : カメラロールに対するPermission
+    **photo : 選択写真
+    */
     constructor(){
         super();
         this.state = {
             hasCameraRollPermission: null,
-            photo: null,
+            photo: [],
         }
     };
 
+    //ヘッダー設定
     static navigationOptions = {
         header: null,
         //title: 'OptCamera',
         //headerLeft: () => <DrawerButton/>,
     };
 
-    callBack(PhotoImg){
-        this.setState({photo: PhotoImg});
-    }
-
-    _getImg = () => {
-        // Image Pickerを起動する　画像選択画面
-        let result = ImagePicker.launchImageLibraryAsync();
-        this.setState({ photo: result });
-    }
-
+    // カメラロールに対するPermissionを許可
     async componentWillMount() {
-        // カメラロールに対するPermissionを許可
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         this.setState({ hasCameraRollPermission: status === 'granted' });
     }
@@ -71,10 +45,17 @@ export class OptCamera extends React.Component{
                         <DrawerButton dest={'StackCamera'}/>
                     </View>
                 </View>
-                <View style={styles.bubble}>  
-                    <List Texts="選択画像ー＞" Title="select" onPress={this._getImg}/>
-                    <List Texts="意味のない" Title="項目"/>
-                    <Check photo={this.state.photo}/>
+                <View style={styles.bubble}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <List Texts="選択画像ー＞" Title="select" onPress={(text) => this.setState({photo: text})}/>
+                        <List Texts="意味のない" Title="項目A"/>
+                        <List Texts="意味のない" Title="項目B"/>
+                        <List Texts="意味のない" Title="項目C"/>
+                        <List Texts="意味のない" Title="項目A"/>
+                        <List Texts="意味のない" Title="項目B"/>
+                        <List Texts="意味のない" Title="項目C"/>
+                        <List Texts="意味のない" Title="項目D"/>
+                    </ScrollView>
                 </View>
             </View>
         );
@@ -167,5 +148,3 @@ const styles = StyleSheet.create({
       backgroundColor: 'green',
     },
 });
-
-Camera.propTypes = propTypes;
