@@ -38,51 +38,10 @@ export class Calculator extends React.Component {
 
             <View style={styles.table}> 
                 <View style={styles.result}></View>
-                <View style={styles.Row}>
-                    {this.moji0.map((value,index)=>{
-                        return(
-                            <View style={styles.node} key={index}>
-                            <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                                <View style={styles.text}><Text>{value}</Text></View>
-                            </ImageBackground>
-                            </View>
-                            );
-
-                        })}
-                </View>
-                <View style={styles.Row}>
-                    {this.moji1.map((value,index)=>{
-                        return(
-                        <View style={styles.node} key={index}>
-                            <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                                <View style={styles.text}><Text>{value}</Text></View>
-                            </ImageBackground>
-                            </View>
-                        );
-                    })}
-                </View>
-                <View style={styles.Row}>
-                    {this.moji2.map((value,index)=>{
-                        return(
-                            <View style={styles.node} key={index}>
-                            <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                                <View style={styles.text}><Text>{value}</Text></View>
-                            </ImageBackground>
-                            </View>
-                        );
-                    })}
-                </View>
-                <View style={styles.Row}>
-                    {this.moji3.map((value,index)=>{
-                        return(
-                            <View style={styles.node} key={index}>
-                            <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                                <View style={styles.text}><Text>{value}</Text></View>
-                            </ImageBackground>
-                            </View>
-                        );
-                    })}
-                </View>
+                <Node array={this.moji0}/>
+                <Node array={this.moji1}/>
+                <Node array={this.moji2}/>
+                <Node array={this.moji3}/>   
                 <View style={styles.Row}>
                 <View style={styles.node}></View>
                 </View>
@@ -91,7 +50,23 @@ export class Calculator extends React.Component {
       );
     }
 }
-
+const Node = (props)=>{
+    return(
+    <View style={styles.Row}>
+    {
+        props.array.map((value,index)=>{
+         return(
+            <View style={styles.node} key={index}>
+            <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
+                <View style={styles.text}><Text>{value}</Text></View>
+            </ImageBackground>
+            </View>
+        )
+    })
+    }
+    </View>
+    )
+}
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'column',
