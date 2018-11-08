@@ -1,7 +1,7 @@
 import React, { Component ,ActivityIndicator} from 'react';
 
 import {  Button,ScrollView, StyleSheet,Picker } from 'react-native';
-
+import {Prefectures} from './Prefectures'
 import {  Text, View  } from 'react-native';
 import {API_key} from './WeatherAPIKey'
 export   class Weather extends Component {
@@ -16,14 +16,10 @@ constructor(props) {
 
     //
 
-    this.Places = [{name:'選択してください',id:''},{name: '札幌', id: 2128295}, {name: '東京', id: 1850147},
-
-                   {name: '大阪', id: 1853909}, {name: '沖縄', id: 1894616},
-
-                  {name:'福岡',id:1863967}]
+    this.places = Prefectures 
 
     this.OpenWeatherMapKey = API_key
-    this.place = this.Places[0] 
+    this.place = this.places[0] 
 
 
 }
@@ -32,11 +28,11 @@ selectPlace(index) {
 
     if (index > 0) {
 
-      this.place = this.Places[index - 1]
+      this.place = this.places[index - 1]
 
-    //  this.setState({placeName: place.name, weather: null, temperature: null, loading: false})
+      this.setState({placeName: this.place.name, weather: null, temperature: null, loading: false})
 
-    //this.getWeather(place.id)
+    this.getWeather(place.id)
 
     }
 
@@ -44,7 +40,7 @@ selectPlace(index) {
   setLoading(){
     this.setState(
         {placeName:this.place.name},
-        {loadging:false}
+        {loadging:true}
     )
     this.getWeather(this.place.id)
   }
@@ -93,8 +89,6 @@ selectPlace(index) {
 
   }
 
-
-
   render() {
     //選択した都道府県の天気予報を表示する画面
     if(this.state.loading){
@@ -138,7 +132,7 @@ selectPlace(index) {
 
         >
 
-                {this.Places.map((place, ix) => <Picker.Item key={ix} value={ix} label={place.name} />)}       
+                {this.places.map((place, ix) => <Picker.Item key={ix} value={ix} label={place.name} />)}       
 
         </Picker>
         <Button

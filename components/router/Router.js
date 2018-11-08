@@ -39,7 +39,6 @@ const HomeStack = createStackNavigator(
 
 const CalculatorStack = createStackNavigator(
     {   
-        
         StackCalculator: {screen: Calculator},
         OptCalculator: {screen: OptCalculator},
     },{
