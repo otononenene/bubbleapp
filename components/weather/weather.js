@@ -30,13 +30,15 @@ selectPlace(index) {
 
       this.place = this.places[index - 1]
 
-      this.setState({placeName: this.place.name, weather: null, temperature: null, loading: false})
+      this.setState({placeName: this.place.name, weather: null, temperature: null, loading: true})
 
-    this.getWeather(place.id)
+      this.getWeather(this.place.id)
 
     }
 
   }
+
+  /*
   setLoading(){
     this.setState(
         {placeName:this.place.name},
@@ -44,6 +46,7 @@ selectPlace(index) {
     )
     this.getWeather(this.place.id)
   }
+  **/
 
   getWeather(id) {
 
@@ -137,7 +140,7 @@ selectPlace(index) {
         </Picker>
         <Button
             title="選択"
-            onPress={()=>this.setLoading()}
+            onPress={()=>this.getWeather(this.place.id)}
         />
     </View>
 
