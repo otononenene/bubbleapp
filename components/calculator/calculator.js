@@ -1,5 +1,5 @@
 import React from 'React';
-import {View, Text, StyleSheet,ImageBackground } from 'react-native'
+import {View, Text, StyleSheet,ImageBackground,Button,Alert } from 'react-native'
 //import { WSATYPE_NOT_FOUND } from 'constants';
 const Circle='./circle.png';
 
@@ -45,8 +45,8 @@ export class Calculator extends React.Component {
     div=(a,b)=>{
         return a/b;
     }
-    loading_number=(props)=>{
-
+    loading_number=(value)=>{
+        this.setState({loaging_number:value})
     }
     render() {
       return (
@@ -60,8 +60,10 @@ export class Calculator extends React.Component {
             </View>
 
             <View style={styles.table}> 
-                <View style={styles.result}></View>
-                <Node array={this.moji0}/>
+                <View style={styles.result}>
+                    <Text>{this.state.loaging_number}</Text>
+                </View>
+                <Node array={this.moji0} action={()=>{this.loaging_number(null)}}/>
                 <Node array={this.moji1}/>
                 <Node array={this.moji2}/>
                 <Node array={this.moji3}/>   
@@ -95,7 +97,14 @@ const Node = (props)=>{
          return(
             <View style={styles.node} key={index}>
             <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                <View style={styles.text}><Text>{value}</Text></View>
+                <View style={styles.text}>
+                <Button
+                    onPress={(value) => {
+                     props.action(value)
+                    }}
+                    title={value}
+                />
+                </View>
             </ImageBackground>
             </View>
         )
