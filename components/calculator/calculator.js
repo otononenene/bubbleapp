@@ -7,8 +7,12 @@ export class Calculator extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            loaging_number:null
+            inputA:0,//最初の入力
+            inputB:0,//演算子の決定後の入力
+            resut:null,//結果
+            loaging_number:null//入力途中の値
         };
+        n=0;//入力回数
        /* moji=['AC','+/-','%','÷',
             '7','8','9','×',
             '4','5','6','-',
@@ -17,6 +21,7 @@ export class Calculator extends React.Component {
         this.moji1=['7','8','9','×']
         this.moji2=['4','5','6','-']
         this.moji3=['1','2','3','+']
+        this.moji4=['0','-','=']
     }
   
     static navigationOptions = ({ navigation }) => {
@@ -24,7 +29,25 @@ export class Calculator extends React.Component {
          header: () => null
       } 
     }
-  
+    //足し算
+    add=(a,b)=>{
+        return a+b;
+    }
+    //引き算
+    sub=(a,b)=>{
+        return a-b;
+    }
+    //掛け算
+    multi=(a,b)=>{
+        return a*b;
+    }
+    //割り算
+    div=(a,b)=>{
+        return a/b;
+    }
+    loading_number=(props)=>{
+
+    }
     render() {
       return (
         <View style={styles.container}>
@@ -43,7 +66,21 @@ export class Calculator extends React.Component {
                 <Node array={this.moji2}/>
                 <Node array={this.moji3}/>   
                 <View style={styles.Row}>
-                <View style={styles.node}></View>
+                    <View style={styles.longnode}>
+                     <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
+                        <View style={styles.text}><Text>{this.moji4[0]}</Text></View>
+                     </ImageBackground>
+                    </View>
+                    <View style={styles.node}>
+                    <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
+                        <View style={styles.text}><Text>{this.moji4[1]}</Text></View>
+                     </ImageBackground>
+                    </View>
+                    <View style={styles.node}>
+                    <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
+                        <View style={styles.text}><Text>{this.moji4[2]}</Text></View>
+                     </ImageBackground>
+                    </View>
                 </View>
             </View>
         </View>
@@ -130,6 +167,12 @@ const styles = StyleSheet.create({
         flex: 1,
         //justifyContent: 'center',
         //alignItems:'center',
+    },
+    longnode:{
+        borderWidth: 2,
+        borderColor: 'green',
+        padding: 5,
+        flex: 2,
     }
 });
   
