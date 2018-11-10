@@ -7,10 +7,10 @@ export class Calculator extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            inputA:0,//最初の入力
+            inputA:0,//最初の入力　
             inputB:0,//演算子の決定後の入力
-            resut:null,//結果
-            loaging_number:null//入力途中の値
+            resut:0,//結果
+            loading_number:0,//入力途中の値
         };
         n=0;//入力回数
        /* moji=['AC','+/-','%','÷',
@@ -18,10 +18,11 @@ export class Calculator extends React.Component {
             '4','5','6','-',
             '1','2','3','+']*/
         this.moji0=['AC','+/-','%','÷']
-        this.moji1=['7','8','9','×']
-        this.moji2=['4','5','6','-']
-        this.moji3=['1','2','3','+']
-        this.moji4=['0','-','=']
+        this.moji1=[7,8,9,'×']
+        this.moji2=[4,5,6,'-']
+        this.moji3=[1,2,3,'+']
+        this.moji4=[0,'-','=']
+        this.operator;//二項演算子
     }
   
     static navigationOptions = ({ navigation }) => {
@@ -45,8 +46,63 @@ export class Calculator extends React.Component {
     div=(a,b)=>{
         return a/b;
     }
-    loading_number=(value)=>{
-        this.setState({loaging_number:value})
+    loading=(value)=>{
+        switch(value){
+            case 'AC':// all clear key　メモリと入力をすべて消去
+                this.state.loading_number=0;
+                this.state.inputA=0;
+                this.state.inputB=0;
+                this.operator=null
+                this.setState({result:this.state.loading_number})
+                break;
+            case 'C'://clear Key　入力途中の値を消去
+                this.moji0[0]='AC'
+                this.state.loading_number=0;
+                this.setState({result:this.state.loading_number})
+                break;
+            case '+/-'://正負の逆転
+                //this.setState({})
+                this.state.loading_number*=-1
+                this.setState({result:this.state.loading_number})
+                break;
+            case '%'://百分率
+                this.state.loading_number/=100;
+                this.setState({result:this.state.loading_number})
+                break;
+            case '+'://加算
+                this.state.inputA=this.state.loading_number;
+                this.operator=this.add;
+                this.state.loading_number=0;
+                this.setState({result:this.state.loading_number})
+                break;
+            case '-'://減算
+                this.state.inputA=this.state.loading_number;
+                this.operator=this.sub;
+                this.state.loading_number=0;
+                this.setState({result:this.state.loading_number})
+                break;
+            case '×'://乗算    
+                this.state.inputA=this.state.loading_number;
+                this.operator=this.multi;
+                this.state.loading_number=0;
+                this.setState({result:this.state.loading_number})
+                break;
+            case '÷'://除算
+                this.state.inputA=this.state.loading_number;
+                this.operator=this.div;
+                this.state.loading_number=0;
+                this.setState({result:this.state.loading_number})
+                break;
+            case '='://二項演算子の計算結果
+                this.state.inputB=this.state.loading_number
+                this.setState({result:this.operator(this.state.inputA,this.state.inputB)})
+                break;
+            default:
+                this.moji0[0]='C'
+                this.state.loading_number=n>0?this.state.loading_number*10+value:value
+                this.setState({result:this.state.loading_number})
+                n++;
+        }
     }
     render() {
       return (
@@ -61,26 +117,48 @@ export class Calculator extends React.Component {
 
             <View style={styles.table}> 
                 <View style={styles.result}>
-                    <Text>{this.state.loaging_number}</Text>
+                    <Text>{this.state.result}</Text>
                 </View>
-                <Node array={this.moji0} action={()=>{this.loaging_number(null)}}/>
-                <Node array={this.moji1}/>
-                <Node array={this.moji2}/>
-                <Node array={this.moji3}/>   
+                <Node array={this.moji0} action={this.loading.bind(this)}/>
+                <Node array={this.moji1} action={this.loading.bind(this)}/>
+                <Node array={this.moji2} action={this.loading.bind(this)}/>
+                <Node array={this.moji3} action={this.loading.bind(this)}/>   
                 <View style={styles.Row}>
                     <View style={styles.longnode}>
                      <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                        <View style={styles.text}><Text>{this.moji4[0]}</Text></View>
+                        <View style={styles.text}>
+                        <Button
+                            onPress={()=>{
+                             this.loading(this.moji4[0])   
+                            }}
+                            title={String(this.moji4[0])}
+                        /> 
+                        </View>
                      </ImageBackground>
                     </View>
                     <View style={styles.node}>
                     <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                        <View style={styles.text}><Text>{this.moji4[1]}</Text></View>
+                        <View style={styles.text}>
+                        <Button
+                            onPress={()=>{
+                             this.loading(this.moji4[1])   
+                            }}
+                            title={String(this.moji4[1])}
+                        /> 
+                        </View>
                      </ImageBackground>
                     </View>
                     <View style={styles.node}>
                     <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                        <View style={styles.text}><Text>{this.moji4[2]}</Text></View>
+                        <View style={styles.text}>
+                        
+                        <Button
+                            onPress={()=>{
+                             this.loading(this.moji4[2])   
+                            }}
+                            title={String(this.moji4[2])}
+                        /> 
+                        </View>
                      </ImageBackground>
                     </View>
                 </View>
@@ -89,20 +167,25 @@ export class Calculator extends React.Component {
       );
     }
 }
-const Node = (props)=>{
+class Node extends React.Component{
+    constructor(props){
+        super(props);
+    }
+    render(){
     return(
     <View style={styles.Row}>
     {
-        props.array.map((value,index)=>{
-         return(
+        this.props.array.map((value,index)=>{
+         console.log(this.props.action)
+            return(
             <View style={styles.node} key={index}>
             <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
                 <View style={styles.text}>
                 <Button
-                    onPress={(value) => {
-                     props.action(value)
+                    onPress={()=>{
+                     this.props.action(value)
                     }}
-                    title={value}
+                    title={String(value)}
                 />
                 </View>
             </ImageBackground>
@@ -112,6 +195,7 @@ const Node = (props)=>{
     }
     </View>
     )
+    }
 }
 const styles = StyleSheet.create({
     container: {
