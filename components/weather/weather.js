@@ -90,7 +90,7 @@ selectPlace(index) {
 
                 itemStyles={styles.pickerItem}
 
-                onValueChange={(selectItem,index)=>{this.selectPlace(index)}  }
+                onValueChange={(ItemValue,ItemIndex)=>{this.selectPlace(ItemIndex)}  }
 
                 selectedValue={this.state.placeName}
 
