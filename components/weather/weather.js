@@ -12,7 +12,7 @@ constructor(props) {
 
     super(props)
 
-    this.state = {placeName: null, weather: null, temperature: null, loading: false}
+    this.state = {placeName:Prefectures[0].name, weather: null, temperature: null, loading: false}
 
     //
 
@@ -28,13 +28,13 @@ selectPlace(index) {
 
     if (index > 0) {
 
-      this.place = this.places[index - 1]
+     this.place = this.places[index ]
 
-      this.setState({placeName: this.place.name, weather: null, temperature: null, loading: true})
+      this.setState({placeName: this.places[index].name, weather: null, temperature: null, loading: false})
 
-      this.getWeather(this.place.id)
+   //   this.getWeather(this.places[index].id)
 
-    }
+   }
 
   }
 
@@ -66,7 +66,7 @@ selectPlace(index) {
 
       .then(() => this.setState({weather: json.weather[0].description,
 
-                                 temperature: json.main.temp, loading: true}))
+                                 temperature: json.main.temp}))
 
     })
 
@@ -129,18 +129,21 @@ selectPlace(index) {
 
             itemStyles={styles.pickerItem}
 
-            onValueChange={(selectItem)=>{this.selectPlace(selectItem+1)}  }
+            onValueChange={(selectItem, index)=>{this.selectPlace(index)}  }
 
-            selectedValue={this.place.id}
+            selectedValue={this.state.placeName}
 
         >
 
-                {this.places.map((place, ix) => <Picker.Item key={ix} value={ix} label={place.name} />)}       
+                {this.places.map((place, ix) => <Picker.Item key={ix} value={place.name} label={place.name} />)}       
 
         </Picker>
         <Button
             title="選択"
-            onPress={()=>this.getWeather(this.place.id)}
+            onPress={()=>{
+                this.setState({loading:true})
+                this.getWeather(this.place.id)
+            }}
         />
     </View>
 
