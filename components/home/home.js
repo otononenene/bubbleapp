@@ -10,8 +10,28 @@ export default class Home extends React.Component {
   constructor(){
     super();
     this.state = {
-
+      node: [
+        {name: ''},
+        {size: 0},
+        {option: []},
+      ],
+      index: 0,
     };
+  }
+
+  _addNode = (node) => {
+    this.state.node.push(node);
+  }
+
+  _clearNode = (Key) => {
+    if(this.state.node.filter((value,index) => {
+      if(value.key == key)
+      this.state.node.splice(index, 1);
+    }));
+  }
+
+  _allclearNode = () => {
+    this.state.node = [];
   }
 
   //ヘッダー設定
@@ -46,12 +66,17 @@ export default class Home extends React.Component {
         </View>
 
         {/*フィールドエリア*/}
-        <View style={styles.table}>
+        <View style={styles.table}
+          onStartShouldSetResponder={() => true}
+        >
 
-          {/*背景画像*/}
-          <ImageBackground source={require (Myon)} style={styles.ImgMyon}>  
-            <Text style={styles.samples}>SAMPLE</Text>
-          </ImageBackground>  
+          <NodeView node={this.state.node}>
+
+            {/*背景画像*/}
+            <ImageBackground source={require (Myon)} style={styles.ImgMyon}>  
+              <Text style={styles.samples}>SAMPLE</Text>
+            </ImageBackground>
+          </NodeView>  
         </View>
 
       </View>

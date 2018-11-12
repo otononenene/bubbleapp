@@ -1,10 +1,115 @@
 import React from 'react';
-import { StyleSheet, View, Button, Image, StatusBar, Text, ScrollView } from 'react-native';
+import { Alert, StyleSheet, View, Button, Image, StatusBar, Text, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
-import DrawerButton from '../router/DrawerButton';
 import {List} from '../list/list.js';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-export class OptCamera extends React.Component{
+export class CameraView extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            node: [],
+            pictures: null,
+        }
+    }
+
+    static _changeCOlor=() => {
+
+    }
+
+    _setPhoto = (Photo) => {
+        this.setState({photo: Photo});
+        this.setState({key: Date.now()});
+    }
+
+    render() {
+        return (
+          <View style={styles.container}>
+    
+            {/*ヘッダーエリア*/}
+            <View style={styles.button}>
+    
+              {/*左ボタン*/}
+              <View style={styles.leftbutton}>
+              </View>
+    
+              {/*中央空白*/}
+              <View style={styles.space}></View>
+    
+              {/*右ボタン*/}
+              <View style={styles.rightbutton}>
+              </View>
+    
+            </View>
+    
+            {/*フィールドエリア*/}
+            <View style={styles.table}>
+    
+                {/*タブエリア*/}
+                <ScrollableTabView
+                    tabBarPosition={"top"}
+                    onScroll={this._changeCOlor}
+                    tabBarBackgroundColor={""}
+                >
+    
+                    {/*Picture*/}
+                    <Pictures tabLabel='写真' setPhoto={this.state.pictures}/>
+                    {/*Option*/}
+                    <Option tabLabel='設定' Photo={this._setPhoto.bind(this)} key={this.state.key}/>
+                    {/*test*/}
+                    <Test tabLabel='test'/>
+                </ScrollableTabView>
+            </View>
+        </View>
+        );
+      }
+}
+
+export class Pictures extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            photo: this.props.setPhoto,
+        }
+    };
+
+    static navigationOptions = {
+        title: 'Camera',
+        //drawerIcon: <Icon/>,
+        header: null,
+        //title: 'Camera',
+        //headerLeft: () => <DrawerButton/>,
+    };
+    
+    render() {
+        let photo = this.state.photo;
+        return (
+            <View style={styles.container}>
+                <StatusBar hidden={true}/>
+                <View style={styles.table}>  
+                    <View style={styles.container} ref={(r) => width = r}>
+                        {(photo && 
+                        <Image style={styles.image} source={{ uri: photo }}/>)}
+                        <TouchableOpacity style={styles.button}
+                                onPress={async () => {
+                                    // Image Pickerを起動する
+                                    let result = await ImagePicker.launchImageLibraryAsync();
+                                    if (!result.cancelled) {
+                                        this.setState({ photo: result.uri });
+                                    }
+                                }}
+                                onLongPress={() => {Alert.alert('長すぎ　ヽ(`Д´)ﾉﾌﾟﾝﾌﾟﾝ')}}
+                        >
+                            <Text style={{fontSize: 50}}>{"((((；ﾟДﾟ))))ｶﾞｸｶﾞｸﾌﾞﾙﾌﾞﾙ"}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        );
+    }
+}
+
+export class Option extends React.Component{
 
     /*STATE
     **hasCameraRollPermission : カメラロールに対するPermission
@@ -13,8 +118,7 @@ export class OptCamera extends React.Component{
     constructor(){
         super();
         this.state = {
-            hasCameraRollPermission: null,
-            photo: [],
+            photo: null,
         }
     };
 
@@ -26,28 +130,30 @@ export class OptCamera extends React.Component{
     };
 
     // カメラロールに対するPermissionを許可
-    async componentWillMount() {
+    /*async componentWillMount() {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         this.setState({ hasCameraRollPermission: status === 'granted' });
+    }*/
+
+    _selectPhoto = () => {
+        this._camera();
+        this.props.Photo(this.state.photo);
+
+    }
+
+    _camera = async() => {
+        let result = await ImagePicker.launchImageLibraryAsync();
+        this.setState({photo: result});
     }
 
     render() {
-        <Camera ImgSource={(PhotoImg) => {this.callBack(PhotoImg); }}></Camera>
         return (
             <View style={styles.container}>
             <StatusBar hidden={true}/>
-                <View style={styles.button}>
-                    <View style={styles.leftbutton}>
-                        <DrawerButton dest={'DrawerHome'}/>
-                    </View>
-                    <View style={styles.space}></View>
-                    <View style={styles.rightbutton}>
-                        <DrawerButton dest={'StackCamera'}/>
-                    </View>
-                </View>
+                
                 <View style={styles.bubble}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        <List Texts="選択画像ー＞" Title="select" onPress={(text) => this.setState({photo: text})}/>
+                        <List Texts="選択画像ー＞" Title="select" onPress={() => this._selectPhoto()}/>
                         <List Texts="意味のない" Title="項目A"/>
                         <List Texts="意味のない" Title="項目B"/>
                         <List Texts="意味のない" Title="項目C"/>
@@ -62,89 +168,48 @@ export class OptCamera extends React.Component{
     }
 }
 
-export class Camera extends React.Component{
-    constructor(){
-        super();
-    };
+let width;
 
-    static navigationOptions = {
-        title: 'Camera',
-        //drawerIcon: <Icon/>,
-        header: null,
-        //title: 'Camera',
-        //headerLeft: () => <DrawerButton/>,
-    };
 
-    Imgreturn(Img){
-        return this.props.ImgSource(Img);
-    }
+callfunc = () => {
+    return <CameraView/>
+}
 
-    
-
-    render() {
-        //let { hasCameraRollPermission, photo } = this.state;
-        //console.log(this.state);
-        return (
+class Test extends React.Component{
+    render(){
+        return(
             <View style={styles.container}>
-                <StatusBar hidden={true}/>
-                <View style={styles.button}>
-                    <View style={styles.leftbutton}>
-                        <DrawerButton dest={'DrawerHome'}/>
-                    </View>
-                    <View style={styles.space}></View>
-                    <View style={styles.rightbutton}>
-                    </View>
-                </View>
-                <View style={styles.bubble}>  
-                    <View style={styles.container}>
-                        {this.props.photo && 
-                        <Image style={styles.image} source={{ uri: this.props.photo.uri }} />}
-                        <Button style={styles.button}
-                                title={"open Image Picker."}
-                                onPress={async () => {
-                                // Image Pickerを起動する
-                                let result = await ImagePicker.launchImageLibraryAsync();
-                                this.Imgreturn(result);
-                                }}
-                        />
-                    </View>
-                </View>
+                <Button title='国士無双' onPress={callfunc}/>
             </View>
         );
     }
 }
 
-
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'white',
       justifyContent: 'center',
     },
     image: {
-        width: '100%',
-        height: '100%',
-        flex: 9,
+
+        width: width,
+        height: 180,
+        justifyContent: 'center',
     },
     button: {
       flex: 1,
-      backgroundColor: 'blue',
       flexDirection: 'row'
     },
     leftbutton: {
       flex: 1,
-      backgroundColor: 'pink',
     },
     space: {
       flex: 2,
     },
     rightbutton: {
       flex: 1,
-      backgroundColor: 'pink',
     },
-    bubble: {
+    table: {
       flex: 9,
-      backgroundColor: 'green',
     },
 });
