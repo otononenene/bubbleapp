@@ -1,11 +1,13 @@
-import {} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import React from 'react';
-import {Text, View, StyleSheet, StatusBar, ScrollView} from 'react-native'
+import {Text, View, StyleSheet, StatusBar, ScrollView, ImageBackground} from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import {NaviButton} from '../router/Headerbuttons.js';
 import {List} from '../list/list.js';
 
-export class Calendar extends React.Component{
+const testImg ='./Murgatroyd.gif';
+
+export class Calendars extends React.Component{
     static navigationOptions = {
         header: null,
         //title: 'Calendar',
@@ -19,6 +21,11 @@ export class Calendar extends React.Component{
         return (
             <View style={styles.container}>
             <StatusBar hidden={true}/>
+            
+            <ImageBackground
+                  source={require(testImg)}
+                  style={{width: '100%', height: '100%'}}>
+
               <View style={styles.button}>
                 <View style={styles.leftbutton}>
                   
@@ -34,21 +41,52 @@ export class Calendar extends React.Component{
                     onScroll={this._changeCOlor}
                     tabBarBackgroundColor={""}
                     >
-                    <OptCalendar tabLabel="Option" />
+                    <CalendarView tabLabel="CalendarView"/>
+                    <Option tabLabel="Option" />
                     
                 </ScrollableTabView>
               <View style={styles.table}>
                     
                 </View>
               </View>
+            </ImageBackground>
+
             </View>
         );
     }
 }
 
+class CalendarView extends React.Component{
+  static navigationOptions = {
+      header: null,
+      //title: 'OptCalendar',
+      //headerLeft: () => <DrawerButton/>,
+  };
 
+  render() {
+      return (
+          <View style={styles.container}>
+          
+            <View style={styles.calendarArea}>  
+              
+                <ImageBackground
+                  source={{uri: testImg}}
+                  style={{width: '100%', height: '100%'}}>
+                  <Calendar 
+                    style={styles.calendar}
+                    theme={{
+                      calendarBackground: 'transparent'
+                    }}
+                  />  
+                </ImageBackground>
+              
+            </View>
+          </View>
+      );
+  }
+}
 
-export class OptCalendar extends React.Component{
+class Option extends React.Component{
     static navigationOptions = {
         header: null,
         //title: 'OptCalendar',
@@ -57,16 +95,7 @@ export class OptCalendar extends React.Component{
     render() {
         return (
             <View style={styles.container}>
-            <StatusBar hidden={true}/>
-              <View style={styles.button}>
-                <View style={styles.leftbutton}>
-                  
-                </View>
-                <View style={styles.space}></View>
-                <View style={styles.rightbutton}>
-                    <NaviButton Navi={'Calender'}/>
-                </View>
-              </View>
+            
               <View style={styles.bubble}>  
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <List Texts="意味のない" Title="項目A"/>
@@ -86,7 +115,7 @@ export class OptCalendar extends React.Component{
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'white',
+
       justifyContent: 'center',
     },
     image: {
@@ -96,25 +125,27 @@ const styles = StyleSheet.create({
     },
     button: {
       flex: 1,
-      backgroundColor: 'white',
       flexDirection: 'row'
     },
     leftbutton: {
       flex: 1,
-      backgroundColor: 'pink',
     },
     space: {
       flex: 2,
     },
     rightbutton: {
       flex: 1,
-      backgroundColor: 'pink',
     },
     bubble: {
       flex: 9,
-      backgroundColor: 'red',
     },
     tab: {
-        backgroundColor: 'black',
+    },
+    calendarArea: {
+      flex: 1,
+    },
+    calendar: {
+      borderWidth: 1,
+      backgroundColor: 'transparent',
     }
   });

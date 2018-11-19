@@ -7,7 +7,7 @@ import {Calculator} from '../calculator/calculator.js';
 import {CameraView} from '../camera/camera.js';
 import {Watch} from '../watch/watch.js';
 import {Weather} from '../weather/weather.js';
-import {Calendar} from '../calendar/calendar.js';
+import {Calendars} from '../calendar/calendar.js';
 import Home from '../home/home.js';
 import {Texts} from '../texts/texts.js';
 
@@ -32,7 +32,7 @@ export const Drawer = createDrawerNavigator({
     DrawerCamera: {screen: CameraView},
     DrawerWatch: {screen: Watch},
     DrawerWeather: {screen: Weather},
-    DrawertCalender: {screen: Calendar},
+    DrawertCalender: {screen: Calendars},
     DrawertTexts: {screen: Texts},
     },{
         drawerWidth: 300,

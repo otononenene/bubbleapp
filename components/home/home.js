@@ -1,37 +1,67 @@
 import React from 'react';
 import {} from 'react-navigation';
-import {StyleSheet, Button, Text, View, ImageBackground, StatusBar } from 'react-native';
+import {Alert, StyleSheet, Button, Text, View, ImageBackground, StatusBar } from 'react-native';
 import DrawerButton from '../router/DrawerButton'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {AddNode, NodeView} from './nodeview'
 
 const Myon = './pictures/Myon.jpg';
 
 export default class Home extends React.Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       node: [
-        {name: ''},
-        {size: 0},
-        {option: []},
+        {index: 0, name: 'Chutl', size: 0, option: []},
       ],
       index: 0,
+      option: [],
+      nowNodeKey: null,
     };
   }
 
-  _addNode = (node) => {
-    this.state.node.push(node);
+  _addNode = (name, option) => {
+    const node = this.state.node;
+    
+    //追加
+    node.push({
+      index: this.state.index+1,
+      name: name,
+      size: 1,
+      option: option,
+    });
+    
+
+    //再描画
+    this.setState({
+      node: node,
+      index: this.state.index+1,
+    })
   }
 
-  _clearNode = (Key) => {
-    if(this.state.node.filter((value,index) => {
+  _clearNode = (key) => {
+    const node = this.state.node;
+    if(node.filter((value,index) => {
       if(value.key == key)
-      this.state.node.splice(index, 1);
+      node.splice(index, 1);
     }));
+
+    this.setState({
+      node: node, 
+    });
   }
 
   _allclearNode = () => {
-    this.state.node = [];
+    const node = [];
+    Alert.alert(
+      'state',
+      'Clear',
+      [
+        {text: 'Ok', onPress: ()=>{}},
+      ],
+      {cancelable: false}
+    );
+
+    this.setState({node: node});
   }
 
   //ヘッダー設定
@@ -60,22 +90,32 @@ export default class Home extends React.Component {
 
           {/*右ボタン*/}
           <View style={styles.rightbutton}>
-            <DrawerButton dest={'StackCalculator'}/>
+            <AddNode
+              style={styles.Nodestyle}
+              Title='追加'
+              onPress={this._addNode.bind(this)}
+              onLongPress={() => {this._allclearNode}}
+              NodeName='text'
+              NodeOption={this.state.node.option}
+              />
           </View>
 
         </View>
 
         {/*フィールドエリア*/}
-        <View style={styles.table}
-          onStartShouldSetResponder={() => true}
-        >
+        <View style={styles.table}>
+          <Text>
+            {String(this.state.node[this.state.node.length-1].index)}
+          </Text>
+          <Text>
+            {this.state.node[this.state.node.length-1].name}
+          </Text>
+          <Text>
+            {this.state.node[this.state.node.length-1].size}  
+          </Text>
 
           <NodeView node={this.state.node}>
 
-            {/*背景画像*/}
-            <ImageBackground source={require (Myon)} style={styles.ImgMyon}>  
-              <Text style={styles.samples}>SAMPLE</Text>
-            </ImageBackground>
           </NodeView>  
         </View>
 
@@ -93,23 +133,19 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 0.95,
-    backgroundColor: 'white',
     flexDirection: 'row'
   },
   leftbutton: {
     flex: 1,
-    backgroundColor: 'pink',
   },
   space: {
     flex: 2,
   },
   rightbutton: {
     flex: 1,
-    backgroundColor: 'pink',
   },
   table: {
     flex: 9,
-    backgroundColor: 'red',
   },
   ImgMyon: {
     flex: 1,
@@ -123,4 +159,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     fontSize: 30,
   },
+  NodeStyle: {
+    flex: 1,
+  }
 });

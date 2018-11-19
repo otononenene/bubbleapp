@@ -129,12 +129,6 @@ export class Option extends React.Component{
         //headerLeft: () => <DrawerButton/>,
     };
 
-    // カメラロールに対するPermissionを許可
-    /*async componentWillMount() {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        this.setState({ hasCameraRollPermission: status === 'granted' });
-    }*/
-
     _selectPhoto = () => {
         this._camera();
         this.props.Photo(this.state.photo);
