@@ -1,8 +1,8 @@
 import React from 'react';
 import {} from 'react-navigation';
-import {Alert, StyleSheet, Button, Text, View, ImageBackground, StatusBar } from 'react-native';
-import DrawerButton from '../router/DrawerButton'
+import {Alert, StyleSheet, Button, Text, View, ImageBackground, StatusBar, Dimensions} from 'react-native';
 import {AddNode, NodeView} from './nodeview'
+
 
 const Myon = './pictures/Myon.jpg';
 
@@ -11,7 +11,7 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       node: [
-        {index: 0, name: 'Chutl', size: 0, option: []},
+        {index: 0, name: 'Chutl', size: 1, option: []},
       ],
       index: 0,
       option: [],
@@ -19,14 +19,22 @@ export default class Home extends React.Component {
     };
   }
 
+  changeSize = () => {
+    if(this.state.index%3 == 0){
+      return 2;
+    }
+    return 1;
+  }
+
   _addNode = (name, option) => {
     const node = this.state.node;
-    
+    const size = this.changeSize();
+
     //追加
     node.push({
       index: this.state.index+1,
       name: name,
-      size: 1,
+      size: size,
       option: option,
     });
     
@@ -51,7 +59,8 @@ export default class Home extends React.Component {
   }
 
   _allclearNode = () => {
-    const node = [];
+    //const node = [  {index: 0, name: 'Chutl', size: 1, option: []}];
+    const node = this.state.node;
     Alert.alert(
       'state',
       'Clear',
@@ -61,7 +70,10 @@ export default class Home extends React.Component {
       {cancelable: false}
     );
 
+    node.pop();
+
     this.setState({node: node});
+    //this.setState({node: node});
   }
 
   //ヘッダー設定
@@ -94,7 +106,7 @@ export default class Home extends React.Component {
               style={styles.Nodestyle}
               Title='追加'
               onPress={this._addNode.bind(this)}
-              onLongPress={() => {this._allclearNode}}
+              onLongPress={() => {this._allclearNode()}}
               NodeName='text'
               NodeOption={this.state.node.option}
               />
@@ -104,15 +116,6 @@ export default class Home extends React.Component {
 
         {/*フィールドエリア*/}
         <View style={styles.table}>
-          <Text>
-            {String(this.state.node[this.state.node.length-1].index)}
-          </Text>
-          <Text>
-            {this.state.node[this.state.node.length-1].name}
-          </Text>
-          <Text>
-            {this.state.node[this.state.node.length-1].size}  
-          </Text>
 
           <NodeView node={this.state.node}>
 
@@ -159,7 +162,10 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     fontSize: 30,
   },
-  NodeStyle: {
+  Nodestyle: {
     flex: 1,
+    backgroundColor: 'gray',
+    borderRadius: 10,
+    borderWidth: 1,
   }
 });

@@ -25,6 +25,23 @@ export class DrawerButton extends React.Component{
     )}
 }
 
+export const _navigate = (node) => {
+    switch(node.name){
+        case 'calculator':
+        return <Calculator state={node}/>
+        case 'calendar':
+        return <Calendars state={node}/>
+        case 'camera':
+        return <CameraView state={node}/>
+        case 'texts':
+        return <Texts state={node}/>
+        case 'watch':
+        return <Watch state={node}/>
+        case 'Weather':
+        return <Weather state={node}/>
+    }
+}
+
 
 export const Drawer = createDrawerNavigator({
     DrawerHome: {screen: Home},
