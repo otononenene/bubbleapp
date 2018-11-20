@@ -13,6 +13,8 @@ export class Calculator extends React.Component {
             loading_number:0,//入力途中の値
         };
         n=0;//入力回数
+        this.Decimal=false;
+        temp=0.1;
        /* moji=['AC','+/-','%','÷',
             '7','8','9','×',
             '4','5','6','-',
@@ -21,7 +23,7 @@ export class Calculator extends React.Component {
         this.moji1=[7,8,9,'×']
         this.moji2=[4,5,6,'-']
         this.moji3=[1,2,3,'+']
-        this.moji4=[0,'-','=']
+        this.moji4=[0,'.','=']
         this.operator;//二項演算子
     }
   
@@ -73,33 +75,47 @@ export class Calculator extends React.Component {
                 this.state.inputA=this.state.loading_number;
                 this.operator=this.add;
                 this.state.loading_number=0;
+                this.Decimal=false
                 this.setState({result:this.state.loading_number})
                 break;
             case '-'://減算
                 this.state.inputA=this.state.loading_number;
                 this.operator=this.sub;
                 this.state.loading_number=0;
+                this.Decimal=false
                 this.setState({result:this.state.loading_number})
                 break;
             case '×'://乗算    
                 this.state.inputA=this.state.loading_number;
                 this.operator=this.multi;
                 this.state.loading_number=0;
+                this.Decimal=false
                 this.setState({result:this.state.loading_number})
                 break;
             case '÷'://除算
                 this.state.inputA=this.state.loading_number;
                 this.operator=this.div;
                 this.state.loading_number=0;
+                this.Decimal=false
                 this.setState({result:this.state.loading_number})
                 break;
             case '='://二項演算子の計算結果
                 this.state.inputB=this.state.loading_number
                 this.setState({result:this.operator(this.state.inputA,this.state.inputB)})
                 break;
-            default:
+            case '.'://小数点
+                this.Decimal=true;
+                this.setState({result:this.state.loading_number})
+                break;
+            default://通常入力
                 this.moji0[0]='C'
-                this.state.loading_number=n>0?this.state.loading_number*10+value:value
+                if(this.Decimal==false){
+                    this.state.loading_number=n>0?this.state.loading_number*10+value:value
+                }
+                else {
+                    this.state.loading_number=this.state.loading_number+value*temp;
+                    temp*=0.1;
+                }
                 this.setState({result:this.state.loading_number})
                 n++;
         }
@@ -117,7 +133,7 @@ export class Calculator extends React.Component {
 
             <View style={styles.table}> 
                 <View style={styles.result}>
-                    <Text>{this.state.result}</Text>
+                    <Text style={styles.resultContent}>{this.state.result}</Text>
                 </View>
                 <Node array={this.moji0} action={this.loading.bind(this)}/>
                 <Node array={this.moji1} action={this.loading.bind(this)}/>
@@ -219,6 +235,9 @@ const styles = StyleSheet.create({
     },
     result:{
         flex:1.4,
+    },
+    resultContent:{
+        fontSize:20
     },
     rightbutton: {
       flex: 1,
