@@ -6,23 +6,54 @@ import {  Text, View  } from 'react-native';
 import {API_key} from './WeatherAPIKey'
 export   class Weather extends Component {
 
+//state = { movies: [] };
+
 constructor(props) {
+
     super(props)
-    this.state = {placeName:'選択してください', weather: null, temperature: null, loading: false}
+
+    this.state = {placeName: null, weather: null, temperature: null, loading: false}
+
+    //
+
     this.places = Prefectures 
+
     this.OpenWeatherMapKey = API_key
     this.place = this.places[0] 
+
+
 }
 
 selectPlace(index) {
 
     if (index > 0) {
-     this.place = this.places[index ]
-      this.setState({placeName: this.place.name, weather: null, temperature: null})
-   }
+
+      this.place = this.places[index - 1]
+
+      this.setState({placeName: this.place.name, weather: null, temperature: null, loading: true})
+
+      this.getWeather(this.place.id)
+
+    }
+
   }
+
+  /*
+  setLoading(){
+    this.setState(
+        {placeName:this.place.name},
+        {loadging:true}
+    )
+    this.getWeather(this.place.id)
+  }
+  **/
+
   getWeather(id) {
+
     const delay = (mSec) => new Promise((resolve) => setTimeout(resolve, mSec))
+
+
+
     fetch(`http://api.openweathermap.org/data/2.5/weather?appid=${this.OpenWeatherMapKey}&id=${
 
           id}&lang=ja&units=metric`)
@@ -35,7 +66,7 @@ selectPlace(index) {
 
       .then(() => this.setState({weather: json.weather[0].description,
 
-                                 temperature: json.main.temp}))
+                                 temperature: json.main.temp, loading: true}))
 
     })
 
@@ -46,11 +77,19 @@ selectPlace(index) {
       console.log('** error **', response)
 
     })
+
   }
+
+    
+
   static navigationOptions = ({ navigation }) => {
+
     return {
+
        header: () => null
+
     } 
+
   }
 
   render() {
@@ -76,43 +115,40 @@ selectPlace(index) {
 
     else{
 
-        return (
+    return (
 
-        <View style={styles.container}>
+    <View style={styles.container}>
 
-            <Text style={styles.title}>
+        <Text style={styles.title}>
 
-                { '天気情報'}
+            { '天気情報'}
 
-            </Text>
+        </Text>
 
-            <Picker style={[styles.picker]} 
+        <Picker style={[styles.picker]} 
 
-                itemStyles={styles.pickerItem}
+            itemStyles={styles.pickerItem}
 
-                onValueChange={(ItemValue,ItemIndex)=>{this.selectPlace(ItemIndex)}  }
+            onValueChange={(selectItem)=>{this.selectPlace(selectItem+1)}  }
 
-                selectedValue={this.state.placeName}
+            selectedValue={this.place.id}
 
-            >
+        >
 
-                    {this.places.map((place, ix) => <Picker.Item key={ix} value={place.name} label={place.name} />)}       
+                {this.places.map((place, ix) => <Picker.Item key={ix} value={ix} label={place.name} />)}       
 
-            </Picker>
-            <Button
-                title="選択"
-                onPress={()=>{
-                    this.setState({loading:true})
-                    this.getWeather(this.place.id)
-                }}
-            />
-        </View>
+        </Picker>
+        <Button
+            title="選択"
+            onPress={()=>this.getWeather(this.place.id)}
+        />
+    </View>
 
-            );
+        );
 
-        }
+      }
 
-        }
+    }
 
 }
 

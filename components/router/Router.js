@@ -7,7 +7,7 @@ import {Calculator} from '../calculator/calculator.js';
 import {CameraView} from '../camera/camera.js';
 import {Watch} from '../watch/watch.js';
 import {Weather} from '../weather/weather.js';
-import {Calendars} from '../calendar/calendar.js';
+import {Calendar} from '../calendar/calendar.js';
 import Home from '../home/home.js';
 import {Texts} from '../texts/texts.js';
 
@@ -25,23 +25,6 @@ export class DrawerButton extends React.Component{
     )}
 }
 
-export const _navigate = (node) => {
-    switch(node.name){
-        case 'calculator':
-        return <Calculator state={node}/>
-        case 'calendar':
-        return <Calendars state={node}/>
-        case 'camera':
-        return <CameraView state={node}/>
-        case 'texts':
-        return <Texts state={node}/>
-        case 'watch':
-        return <Watch state={node}/>
-        case 'Weather':
-        return <Weather state={node}/>
-    }
-}
-
 
 export const Drawer = createDrawerNavigator({
     DrawerHome: {screen: Home},
@@ -49,7 +32,7 @@ export const Drawer = createDrawerNavigator({
     DrawerCamera: {screen: CameraView},
     DrawerWatch: {screen: Watch},
     DrawerWeather: {screen: Weather},
-    DrawertCalender: {screen: Calendars},
+    DrawertCalender: {screen: Calendar},
     DrawertTexts: {screen: Texts},
     },{
         drawerWidth: 300,
