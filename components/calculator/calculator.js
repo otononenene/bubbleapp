@@ -1,5 +1,7 @@
 import React from 'React';
 import {View, Text, StyleSheet,ImageBackground,Button,Alert } from 'react-native'
+import {AddNode} from '../home/nodeview.js';
+import BackButton from '../router/BackButton.js';
 //import { WSATYPE_NOT_FOUND } from 'constants';
 const Circle='./circle.png';
 
@@ -7,10 +9,19 @@ export class Calculator extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            node: {
+                index: 0,
+                name: 'Cthul',
+                size: 1,
+                option: {
+                    result: 0,
+                },
+            },
             inputA:0,//最初の入力　
             inputB:0,//演算子の決定後の入力
             resut:0,//結果
             loading_number:0,//入力途中の値
+            addFlag: true,
         };
         n=0;//入力回数
         this.Decimal=false;
@@ -125,9 +136,23 @@ export class Calculator extends React.Component {
         <View style={styles.container}>
             <View style={styles.button}>
                 <View style={styles.leftbutton}>
+                    <BackButton/>
                 </View>
                 <View style={styles.space}></View>
                 <View style={styles.rightbutton}>
+                    {(()=>{if(this.state.addFlag === true){
+                        return (
+                            <AddNode
+                                style={styles.Nodestyle}
+                                Title='追加'
+                                onPress={()=>{}}
+                                onLongPress={()=>{}}
+                                NodeName='text'
+                                NodeOption={this.state.node.option}
+                            />
+                        );}
+                        return;
+                    })()}
                 </View>
             </View>
 
@@ -285,7 +310,13 @@ const styles = StyleSheet.create({
         borderColor: 'green',
         padding: 5,
         flex: 2,
-    }
+    },
+    Nodestyle: {
+        flex: 1,
+        backgroundColor: 'gray',
+        borderRadius: 10,
+        borderWidth: 1,
+    },
 });
   
 export class OptCalculator extends React.Component{

@@ -4,19 +4,25 @@ import {Text, View, StyleSheet, StatusBar, ScrollView, ImageBackground} from 're
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import {NaviButton} from '../router/Headerbuttons.js';
 import {List} from '../list/list.js';
+import {AddNode} from '../home/nodeview.js';
+import BackButton from '../router/BackButton.js';
 
 const testImg ='./Murgatroyd.gif';
 
 export class Calendars extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      node: {index: 0, name: 'Cthul', size: 1, option: {}},
+      addFlag: true,
+    }
+  }
     static navigationOptions = {
         header: null,
         //title: 'Calendar',
         //headerLeft: () => <DrawerButton/>,
     };
 
-    static _changeCOlor=() => {
-
-    }
     render(){
         return (
             <View style={styles.container}>
@@ -28,11 +34,23 @@ export class Calendars extends React.Component{
 
               <View style={styles.button}>
                 <View style={styles.leftbutton}>
-                  
+                  <BackButton/>
                 </View>
                 <View style={styles.space}></View>
                 <View style={styles.rightbutton}>
-                  
+                  {(()=>{if(this.state.addFlag === true){
+                    return (
+                      <AddNode
+                        style={styles.Nodestyle}
+                        Title='追加'
+                        onPress={()=>{}}
+                        onLongPress={()=>{}}
+                        NodeName='text'
+                        NodeOption={this.state.node.option}
+                      />
+                    );}
+                    return;
+                  })()}
                 </View>
               </View>
               <View style={styles.bubble}>
@@ -147,5 +165,11 @@ const styles = StyleSheet.create({
     calendar: {
       borderWidth: 1,
       backgroundColor: 'transparent',
-    }
+    },
+    Nodestyle: {
+      flex: 1,
+      backgroundColor: 'gray',
+      borderRadius: 10,
+      borderWidth: 1,
+    },
   });

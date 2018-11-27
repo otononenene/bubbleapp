@@ -1,5 +1,9 @@
 import React from 'react';
-import {Alert, View, StyleSheet, TouchableOpacity, Text} from 'react-native'
+import {Alert, View, StyleSheet, TouchableOpacity, Text, Dimensions} from 'react-native'
+import Gestures from 'react-native-easy-gestures';
+import {_navigate} from '../router/Router.js'
+
+const Dim = Dimensions.get("window").width/3 -10;
 
 export class NodeView extends React.Component{
     constructor(props){
@@ -14,21 +18,9 @@ export class NodeView extends React.Component{
         this.node.setState({Component: <Calculator/>})
     }
 
-    _navigate = (title) => {
-        switch(title){
-            case 'calculator':
-            return <Calculator state={this.state.node}/>
-            case 'calendar':
-            return <Calendar state={this.state.node}/>
-            case 'camera':
-            return <Camera state={this.state.node}/>
-            case 'texts':
-            return <Texts state={this.state.node}/>
-            case 'watch':
-            return <Watch state={this.state.node}/>
-            case 'Weather':
-            return <Weather state={this.state.node}/>
-        }
+    navigate = (node) => {
+        _navigate(node);
+
     }
 
     _gesture = () => {
@@ -43,27 +35,31 @@ export class NodeView extends React.Component{
             <View style={styles.Viewer}>
                 {this.state.node.map((value,index) => {
                     return(
-                    <View key={String(index)} style={{backgroundColor: "lightblue", padding: 10, borderWidth: 5, overflow: "hidden"}}>
-                        <TouchableOpacity onPress={()=>{Alert.alert(
-                            'setname',
-                            'select',
-                            [
-                                {text: "OK", onPress: ()=>{}},
-                            ]                        
-                        )}}>
-                        <Text style={{fontSize: 10}}>Call of Chutl</Text>
-                        <Text style={{fontSize: 10}}>{value.name}</Text>
-                        {/*this.props.node.map((value,index) => {
-                        
-                            <TouchableOpacity 
-                                onPress={() => {return;}}
-                                onLongPress={() => {return;}}
+                        <View key={String(index)}>
+                            <Gestures
+                                rotatable={false}
+                                scalable={{
+                                    min: 1,
+                                    max: 3,
+                                }}
+                                
                             >
-                                <Text>{value.text}</Text>
-                            </TouchableOpacity>
-                        })*/}
-                        </TouchableOpacity>
-                    </View>
+                                <TouchableOpacity
+                                    style={{
+                                        backgroundColor: "lightblue",
+                                        margin: 5,
+                                        borderWidth: 5,
+                                        borderRadius: Dim * value.size /2,
+                                        overflow: "hidden",
+                                        width: value.size * Dim,
+                                        height: value.size * Dim,
+                                    }} 
+                                    onPress={()=>{this.navigate(value)}}
+                                >
+                                    <Text style={{fontSize: 20, alignItems: 'center'}}>{value.name}</Text>
+                                </TouchableOpacity>
+                            </Gestures>
+                        </View>
                     );
                 })}
                 
@@ -77,14 +73,12 @@ export class AddNode extends React.Component{
     render(){
         return(
             <View style={styles.container}>
-                <View style={this.props.style}>
-                    <TouchableOpacity
-                        
-                        onPress={() => {this.props.onPress(this.props.NodeName, this.props.NodeOption);}}
-                        onLongPress={() => {this.props.onLongPress}}>
-                            <Text>{this.props.Title}</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                    style={this.props.style}    
+                    onPress={() => {this.props.onPress(this.props.NodeName, this.props.NodeOption);}}
+                    onLongPress={() => {this.props.onLongPress()}}>
+                        <Text>{this.props.Title}</Text>
+                </TouchableOpacity>
             </View>
         );
     }
