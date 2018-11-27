@@ -1,0 +1,7 @@
+App
+|
+|---Drawer:画面遷移
+    |
+    |---Home:DBとViewer
+    |---Camera
+    |---...
