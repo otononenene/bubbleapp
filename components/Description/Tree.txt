@@ -4,4 +4,12 @@ App
     |
     |---Home:DBとViewer
     |---Camera
+    |---Calculator 
     |---...
+
+
+・全コンポーネントのstateにnodeを追加
+・state.option:
+	Home:全コンポーネントのデータを格納
+	Home以外:Homeとのやりとする必要のあるデータ
+・HomeにRealmを使用して、DBを構築
