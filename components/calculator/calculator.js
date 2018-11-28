@@ -15,27 +15,22 @@ export class Calculator extends React.Component {
                 size: 1,
                 option: {
                     result: 0,
+                    inputA:0,//最初の入力　
+                    inputB:0,//演算子の決定後の入力
+                    resut:0,//結果
+                    loading_number:0,//入力途中の値
+                    n:0,//入力回数
+                    Decimal:false,
+                    temp:0.1,
+                    moji0:['AC','+/-','%','÷'],
+                    moji1:[7,8,9,'×'],
+                    moji2:[4,5,6,'-'],
+                    moji3:[1,2,3,'+'],
+                    moji4:[0,'.','='],
+                    operator:null//二項演算子
                 },
             },
-            inputA:0,//最初の入力　
-            inputB:0,//演算子の決定後の入力
-            resut:0,//結果
-            loading_number:0,//入力途中の値
-            addFlag: true,
         };
-        n=0;//入力回数
-        this.Decimal=false;
-        temp=0.1;
-       /* moji=['AC','+/-','%','÷',
-            '7','8','9','×',
-            '4','5','6','-',
-            '1','2','3','+']*/
-        this.moji0=['AC','+/-','%','÷']
-        this.moji1=[7,8,9,'×']
-        this.moji2=[4,5,6,'-']
-        this.moji3=[1,2,3,'+']
-        this.moji4=[0,'.','=']
-        this.operator;//二項演算子
     }
   
     static navigationOptions = ({ navigation }) => {
