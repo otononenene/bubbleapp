@@ -1,7 +1,8 @@
 import React from 'react';
 import {Alert, View, StyleSheet, TouchableOpacity, Text, Dimensions} from 'react-native'
 import Gestures from 'react-native-easy-gestures';
-import {_navigate} from '../router/Router.js'
+import {_navigate} from '../router/Router.js';
+import {Node} from './nodes.js';
 
 const Dim = Dimensions.get("window").width/3 -10;
 
@@ -54,9 +55,11 @@ export class NodeView extends React.Component{
                                         width: value.size * Dim,
                                         height: value.size * Dim,
                                     }} 
-                                    onPress={()=>{this.navigate(value)}}
+                                    onPress={()=>{
+                                        this.navigate(value.name)
+                                    }}
                                 >
-                                    <Text style={{fontSize: 20, alignItems: 'center'}}>{value.name}</Text>
+                                    <NodeMini node={value}/>
                                 </TouchableOpacity>
                             </Gestures>
                         </View>
@@ -80,6 +83,29 @@ export class AddNode extends React.Component{
                         <Text>{this.props.Title}</Text>
                 </TouchableOpacity>
             </View>
+        );
+    }
+}
+
+class NodeMini extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            pos: {x: 0, y: 0,}
+        }
+    }
+    componentDidMount() {
+        var pointA = React.findDOMNode(this.refs.pointA);
+        var pointB = React.findDOMNode(this.refs.pointB);
+    }
+
+    render(){
+        return(
+            <View style={styles.container}>
+                <Node node={this.props.node}>
+
+                </Node>
+            </View>            
         );
     }
 }

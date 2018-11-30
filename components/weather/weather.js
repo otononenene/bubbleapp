@@ -1,96 +1,66 @@
 import React, { Component ,ActivityIndicator} from 'react';
-
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 import {  Button,ScrollView, StyleSheet,Picker } from 'react-native';
-import {Prefectures} from './Prefectures'
+import {Prefectures} from './Prefectures';
 import {  Text, View  } from 'react-native';
-import {API_key} from './WeatherAPIKey'
-export   class Weather extends Component {
+import {API_key} from './WeatherAPIKey';
+import {AddNode} from '../home/nodeview.js';
+import BackButton from '../router/BackButton.js';
+import {List} from '../list/list.js';
 
-//state = { movies: [] };
+export class Weather extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            placeName: null,
+            weather: null,
+            temperature: null,
+            loading: false
+        },
+        this.places = Prefectures 
 
-constructor(props) {
-
-    super(props)
-
-    this.state = {placeName: null, weather: null, temperature: null, loading: false}
-
-    //
-
-    this.places = Prefectures 
-
-    this.OpenWeatherMapKey = API_key
-    this.place = this.places[0] 
-
-
-}
-
-selectPlace(index) {
-
-    if (index > 0) {
-
-      this.place = this.places[index - 1]
-
-      this.setState({placeName: this.place.name, weather: null, temperature: null, loading: true})
-
-      this.getWeather(this.place.id)
-
+        this.OpenWeatherMapKey = API_key
+        this.place = this.places[0] 
     }
 
-  }
+    selectPlace(index) {
+        if (index > 0) {
+            this.place = this.places[index - 1];
+            this.setState({
+                placeName: this.place.name,
+                weather: null,
+                temperature: null,
+                loading: true
+            })
+            this.getWeather(this.place.id)
+        }
+    }
 
-  /*
-  setLoading(){
-    this.setState(
-        {placeName:this.place.name},
-        {loadging:true}
-    )
-    this.getWeather(this.place.id)
-  }
-  **/
+    getWeather(id) {
+        const delay = (mSec) => new Promise((resolve) => setTimeout(resolve, mSec))
+        fetch(`http://api.openweathermap.org/data/2.5/weather?appid=${this.OpenWeatherMapKey}&id=${id}&lang=ja&units=metric`)
 
-  getWeather(id) {
+        .then((response) => response.json())
 
-    const delay = (mSec) => new Promise((resolve) => setTimeout(resolve, mSec))
+        .then((json) => {
+            delay(700)
+            .then(() => this.setState({
+                weather: json.weather[0].description,
+                temperature: json.main.temp,
+                loading: true
+            }))
+        })
 
+        .catch((response) => {
+            this.setState({loading: false})
+        })
+    }
 
-
-    fetch(`http://api.openweathermap.org/data/2.5/weather?appid=${this.OpenWeatherMapKey}&id=${
-
-          id}&lang=ja&units=metric`)
-
-    .then((response) => response.json())
-
-    .then((json) => {
-
-      delay(700)
-
-      .then(() => this.setState({weather: json.weather[0].description,
-
-                                 temperature: json.main.temp, loading: true}))
-
-    })
-
-    .catch((response) => {
-
-      this.setState({loading: false})
-
-      console.log('** error **', response)
-
-    })
-
-  }
-
-    
-
-  static navigationOptions = ({ navigation }) => {
-
-    return {
-
-       header: () => null
-
-    } 
-
-  }
+    static navigationOptions = ({ navigation }) => {
+        return {
+            header: () => null
+        } 
+    }
 
   render() {
     //選択した都道府県の天気予報を表示する画面

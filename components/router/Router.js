@@ -9,7 +9,7 @@ import {Watch} from '../watch/watch.js';
 import {Weather} from '../weather/weather.js';
 import {Calendars} from '../calendar/calendar.js';
 import Home from '../home/home.js';
-import {Texts} from '../texts/texts.js';
+import {TextView} from '../texts/texts.js';
 
 export const _navigate = (node) => {
     switch(node.name){
@@ -36,7 +36,7 @@ export const Drawer = createDrawerNavigator({
     DrawerWatch: {screen: Watch},
     DrawerWeather: {screen: Weather},
     DrawertCalender: {screen: Calendars},
-    DrawertTexts: {screen: Texts},
+    DrawertTexts: {screen: TextView},
     },{
         drawerWidth: 300,
         //contentComponent: <Menu/>,
