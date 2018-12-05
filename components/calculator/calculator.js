@@ -98,7 +98,7 @@ export class Calculator extends React.Component {
                             temp:0.1
                 })
                 break;
-            case '-'://減算
+            case '-'://減算 
                 this.setState({
                             inputA:this.state.loading_number,
                             operator:this.sub,
