@@ -1,4 +1,4 @@
-App
+﻿App
 |
 |---Drawer:画面遷移
     |
@@ -12,4 +12,5 @@ App
 ・state.option:
 	Home:全コンポーネントのデータを格納
 	Home以外:Homeとのやりとする必要のあるデータ
-・HomeにRealmを使用して、DBを構築
+・Homeにstorageを使用して、DBを構築
+

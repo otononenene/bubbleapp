@@ -5,6 +5,12 @@ import {_navigate} from '../router/Router.js';
 import {Node} from './nodes.js';
 
 const Dim = Dimensions.get("window").width/3 -10;
+const grid = [
+    [[0,0],     [Dim,0],    [Dim*2,0]],
+    [[0,Dim],   [Dim,Dim],  [Dim*2,Dim]],
+    [[0,Dim*2], [Dim,Dim*2],[Dim*2,Dim*2]],
+    [[0,Dim*3], [Dim,Dim*3],[Dim*2,Dim*3]],
+];
 
 export class NodeView extends React.Component{
     constructor(props){
@@ -12,40 +18,41 @@ export class NodeView extends React.Component{
         this.state = {
             node: this.props.node,
             gestureFlag: false,
+            flag: false,
         }
     }
 
-    nodeCompo = () => {
-        this.node.setState({Component: <Calculator/>})
-    }
+    checkPos = (top, left)=>{
 
-    navigate = (node) => {
-        _navigate(node);
-
-    }
-
-    _gesture = () => {
-        /*ジェスチャーモード*/
-        this.setState({gestureFlag: true});
-
-        
-    }
+    };
 
     render(){
         return(
             <View style={styles.Viewer}>
                 {this.state.node.map((value,index) => {
                     return(
-                        <View key={String(index)}>
+                        <View
+                            key={String(index)}
+                        >
                             <Gestures
+                                draggable={{
+                                    x: true,
+                                    y: true,
+                                  }}
                                 rotatable={false}
                                 scalable={{
                                     min: 1,
                                     max: 3,
                                 }}
-                                
+                                onEnd={(event,style)=>{
+                                    style.left=0;
+                                    style.top=0;
+                                    this.setState({flag: !this.state.flag});
+                                }}
+
                             >
-                                <TouchableOpacity
+                                <MiniNode
+                                    node={value}
                                     style={{
                                         backgroundColor: "lightblue",
                                         margin: 5,
@@ -54,13 +61,9 @@ export class NodeView extends React.Component{
                                         overflow: "hidden",
                                         width: value.size * Dim,
                                         height: value.size * Dim,
-                                    }} 
-                                    onPress={()=>{
-                                        this.navigate(value.name)
                                     }}
                                 >
-                                    <NodeMini node={value}/>
-                                </TouchableOpacity>
+                                </MiniNode>
                             </Gestures>
                         </View>
                     );
@@ -87,24 +90,19 @@ export class AddNode extends React.Component{
     }
 }
 
-class NodeMini extends React.Component{
+class MiniNode extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            pos: {x: 0, y: 0,}
+            node: this.props.node,
         }
-    }
-    componentDidMount() {
-        var pointA = React.findDOMNode(this.refs.pointA);
-        var pointB = React.findDOMNode(this.refs.pointB);
     }
 
     render(){
         return(
-            <View style={styles.container}>
-                <Node node={this.props.node}>
-
-                </Node>
+            <View style={this.props.style}>
+                <Text>{this.state.node.name}</Text>
+                <Text>{String(this.state.flag)}</Text>
             </View>            
         );
     }
