@@ -1,6 +1,7 @@
 import React from 'React';
 import {View, Text, StyleSheet, ScrollView } from 'react-native'
 import {List} from '../list/list.js';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 export default class Home extends React.Component {
 
@@ -76,20 +77,15 @@ export default class Opt extends React.Component {
 
         {/*フィールドエリア*/}
         <View style={styles.table}>
-
-          {/*スクロールエリア*/}
-          <ScrollView showsVerticalScrollIndicator={false}>
-
-            {/*ページA*/}
-            <ComponentA/>
-            {/*ページB*/}
-            <ComponentB/>
-            {/*ページC*/}
-            <ComponentC/>
-            {/*ページD*/}
-            <ComponentD/>
-            
-          </ScrollView>
+                <ScrollableTabView
+                    tabBarPosition={"top"}
+                    onScroll={this._changeCOlor}
+                    tabBarBackgroundColor={""}
+                    >
+                    <CalendarView tabLabel="CalendarView"/>
+                    <Option tabLabel="Option" />
+                    
+                </ScrollableTabView>
         </View>
       </View>
     );

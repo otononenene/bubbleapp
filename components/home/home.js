@@ -13,9 +13,12 @@ export default class Home extends React.Component {
     this.state = {
       node: [
         {index: 0, name: 'Calculator', size: 1, option: []},
+        {index: 1, name: 'Camera', size: 1, option: []},
+        {index: 2, name: 'Camera', size: 1, option: []},
+        {index: 3, name: 'Camera', size: 1, option: []},
+        {index: 4, name: 'Camera', size: 1, option: []},
+        {index: 5, name: 'Camera', size: 1, option: []},
       ],
-      index: 0,
-      option: [],
       nowNodeKey: null,
     };
   }
