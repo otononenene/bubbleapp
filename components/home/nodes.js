@@ -1,11 +1,10 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native'
+import {Alert, View, StyleSheet, TouchableOpacity, Text, Dimensions} from 'react-native'
 
-export class MiniCmaera extends React.Component{
+export class Node extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            node: this.props.node,
 
         }
     }
@@ -13,12 +12,11 @@ export class MiniCmaera extends React.Component{
     render(){
         return(
             <View style={styles.container}>
-                <></>
+
             </View>
         );
     }
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -27,4 +25,9 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       justifyContent: 'center',
     },
+    Viewer: {
+        flexDirection: 'row',
+        flex: 1,
+        flexWrap: 'wrap'
+    }
 });

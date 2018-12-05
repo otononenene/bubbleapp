@@ -12,7 +12,7 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       node: [
-        {index: 0, name: 'Cthul', size: 1, option: []},
+        {index: 0, name: 'Calculator', size: 1, option: []},
       ],
       index: 0,
       option: [],

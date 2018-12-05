@@ -2,19 +2,24 @@ import React from 'react';
 import { Alert, StyleSheet, View, Button, Image, StatusBar, Text, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
 import {List} from '../list/list.js';
+import {AddNode} from '../home/nodeview.js';
+import BackButton from '../router/BackButton.js';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 export class CameraView extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            node: [],
-            pictures: null,
+            node: {
+                index: 0,
+                name: 'Cthul',
+                size: 1,
+                option: {
+                    pictures: null,    
+                },
+            },
+            addFlag: true,
         }
-    }
-
-    static _changeCOlor=() => {
-
     }
 
     _setPhoto = (Photo) => {
@@ -31,6 +36,7 @@ export class CameraView extends React.Component{
     
               {/*左ボタン*/}
               <View style={styles.leftbutton}>
+                <BackButton/>
               </View>
     
               {/*中央空白*/}
@@ -38,6 +44,19 @@ export class CameraView extends React.Component{
     
               {/*右ボタン*/}
               <View style={styles.rightbutton}>
+                    {(()=>{if(this.state.addFlag === true){
+                        return (
+                            <AddNode
+                                style={styles.Nodestyle}
+                                Title='追加'
+                                onPress={()=>{}}
+                                onLongPress={()=>{}}
+                                NodeName='text'
+                                NodeOption={this.state.node.option}
+                            />
+                        );}
+                        return;
+                    })()}
               </View>
     
             </View>
@@ -53,7 +72,7 @@ export class CameraView extends React.Component{
                 >
     
                     {/*Picture*/}
-                    <Pictures tabLabel='写真' setPhoto={this.state.pictures}/>
+                    <Pictures tabLabel='写真' setPhoto={this.state.node.option.pictures}/>
                     {/*Option*/}
                     <Option tabLabel='設定' Photo={this._setPhoto.bind(this)} key={this.state.key}/>
                     {/*test*/}
@@ -148,13 +167,7 @@ export class Option extends React.Component{
                 <View style={styles.bubble}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <List Texts="選択画像ー＞" Title="select" onPress={() => this._selectPhoto()}/>
-                        <List Texts="意味のない" Title="項目A"/>
-                        <List Texts="意味のない" Title="項目B"/>
-                        <List Texts="意味のない" Title="項目C"/>
-                        <List Texts="意味のない" Title="項目A"/>
-                        <List Texts="意味のない" Title="項目B"/>
-                        <List Texts="意味のない" Title="項目C"/>
-                        <List Texts="意味のない" Title="項目D"/>
+
                     </ScrollView>
                 </View>
             </View>
@@ -205,5 +218,11 @@ const styles = StyleSheet.create({
     },
     table: {
       flex: 9,
+    },
+    Nodestyle: {
+        flex: 1,
+        backgroundColor: 'gray',
+        borderRadius: 10,
+        borderWidth: 1,
     },
 });
