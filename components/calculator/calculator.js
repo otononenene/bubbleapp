@@ -1,9 +1,10 @@
 import React from 'React';
-import {View, Text, StyleSheet,ImageBackground,Button,Alert } from 'react-native'
+import {View, Text, StyleSheet,Button ,Dimensions} from 'react-native'
 import {AddNode} from '../home/nodeview.js';
-import BackButton from '../router/BackButton.js';
+import BackButton from '../router/BackButton.js'; 
 //import { WSATYPE_NOT_FOUND } from 'constants';
-const Circle='./circle.png';
+const Dim = Dimensions.get("window").width/3 -10;
+import {Node,Node4,Table} from './Node'
 
 export class Calculator extends React.Component {
     constructor(props){
@@ -15,11 +16,14 @@ export class Calculator extends React.Component {
             loading_number:0,//入力途中の値
             n:0,//入力回数
             Decimal:false,
-            temp:0.1,
-            moji0:['AC','+/-','%','÷'],
-            moji1:[7,8,9,'×'],
-            moji2:[4,5,6,'-'],
-            moji3:[1,2,3,'+'],
+            temp:10,
+            mojis:[
+                ['AC','+/-','%','÷'],
+                [7,8,9,'×'],
+                [4,5,6,'-'],
+                [1,2,3,'+'],
+                [0,'.','='],
+            ],
             operator:null,//二項演算子
             node: {
                 index: 0,
@@ -36,28 +40,14 @@ export class Calculator extends React.Component {
          header: () => null
       } 
     }
-    //足し算
-    add=(a,b)=>{
-        return a+b;
-    }
-    //引き算
-    sub=(a,b)=>{
-        return a-b;
-    }
-    //掛け算
-    multi=(a,b)=>{
-        return a*b;
-    }
-    //割り算
-    div=(a,b)=>{
-        return a/b;
-    }
+
     loading=(value)=>{
         switch(value){
             case 'AC':// all clear key　メモリと入力をすべて消去
                  this.state.loading_number=0;
                 this.setState({
-                            temp:0.1,
+                            n:0,
+                            temp:10,
                             loading_number:0,
                             inputA:0,
                             inputB:0,
@@ -67,10 +57,10 @@ export class Calculator extends React.Component {
                 })
                 break;
             case 'C'://clear Key　入力途中の値を消去
-                // this.moji0[0]='AC'
+                this.state.mojis[0][0]='AC'
                 this.state.loading_number=0;
                 this.setState({
-                            moji0:['AC','+/-','%','÷'],
+                            n:0,
                             result:this.state.loading_number
                 
                 })
@@ -90,72 +80,81 @@ export class Calculator extends React.Component {
                 break;
              case '+'://加算
                 this.setState({
+                            n:0,
                             inputA:this.state.loading_number,
-                            operator:this.add,
+                            operator:(a,b)=>{return a+b},
                             loading_number:0,
                             Decimal:false,
                             result:0,
-                            temp:0.1
+                            temp:10
                 })
                 break;
             case '-'://減算
                 this.setState({
+                            n:0,
                             inputA:this.state.loading_number,
-                            operator:this.sub,
+                            operator:(a,b)=>{return a-b;},
                             loading_number:0,
                             Decimal:false,
                             result:0,
-                            temp:0.1
+                            temp:10
                 })
                 break;
             case '×'://乗算    
                 this.setState({
+                            n:0,
                             inputA:this.state.loading_number,
-                            operator:this.multi,
+                            operator:(a,b)=>{return a*b},
                             loading_number:0,
                             Decimal:false,
                             result:0,
-                            temp:0.1
+                            temp:10
                 })
                 break;
             case '÷'://除算
                 this.setState({
+                            n:0,
                             inputA:this.state.loading_number,
-                            operator:this.div,
+                            operator:(a,b)=>{return a/b},
                             loading_number:0,
                             Decimal:false,
                             result:0,
-                            temp:0.1
+                            temp:10
                 })
                 break;
             case '='://二項演算子の計算結果
                 this.state.inputB=this.state.loading_number
-                // this.setState({result:this.operator(this.state.inputA,this.state.inputB)})
                 this.setState({
                             result:this.state.operator(this.state.inputA,this.state.inputB)
                 })
+                this.state.loading_number=this.state.result;
+                this.state.result=0;
+                this.state.inputA=0;
+                this.state.inputB=0;
                 break;
             case '.'://小数点
-            //    this.Decimal=true;
                 this.setState({
                             Decimal:this.state.Decimal?false:true,//二回押したら、元に戻る
-                            result:this.state.loading_number
                 })
 
                 break;
             default://通常入力
+                this.state.mojis[0][0]='C'
                 if(this.state.Decimal==false){
                     this.state.loading_number=this.state.n>0?
                     this.state.loading_number*10+value:value
                 }
                 else {
-                    this.state.loading_number=this.state.loading_number+value*this.state.temp
-                    this.setState({temp:this.state.temp*0.1})
+                    this.state.loading_number=(this.state.loading_number*this.state.temp+value)/this.state.temp
+                    this.setState({temp:this.state.temp*10})
                 }
-                this.setState({result:this.state.loading_number})
+                this.setState({
+                    result:this.state.loading_number,
+                })
                 this.state.n++;
         }
     }
+    
     render() {
       return (
         <View style={styles.container}>
@@ -180,97 +179,22 @@ export class Calculator extends React.Component {
                     })()}
                 </View>
             </View>
-
-            <View style={styles.table}> 
-                <View style={styles.result}>
-                    <Text style={styles.resultContent}>
-                    
-                    {
-                        this.state.result
-                    }{
-                        this.state.Decimal & this.state.temp==0.1 ?.0:null
-                    }
-                    </Text>
-                </View>
-                <Node array={this.state.moji0} action={this.loading.bind(this)}/>
-                <Node array={this.state.moji1} action={this.loading.bind(this)}/>
-                <Node array={this.state.moji2} action={this.loading.bind(this)}/>
-                <Node array={this.state.moji3} action={this.loading.bind(this)}/>   
-                <View style={styles.Row}>
-                    <View style={styles.longnode}>
-                     <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                        <View style={styles.text}>
-                        <Button
-                            onPress={()=>{
-                             this.loading(0)   
-                            }}
-                            title={String(0)}
-                        /> 
-                        </View>
-                     </ImageBackground>
-                    </View>
-                    <View style={styles.node}>
-                    <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                        <View style={styles.text}>
-                        <Button
-                            onPress={()=>{
-                             this.loading('.')   
-                            }}
-                            title='.'
-                        /> 
-                        </View>
-                     </ImageBackground>
-                    </View>
-                    <View style={styles.node}>
-                    <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                        <View style={styles.text}>
-                        
-                        <Button
-                            onPress={()=>{
-                             this.loading('=')   
-                            }}
-                            title='='
-                        /> 
-                        </View>
-                     </ImageBackground>
-                    </View>
-                </View>
-            </View>
+        
+            <Table 
+                 mojis={this.state.mojis} 
+                 action={this.loading.bind(this)}
+                 mojis={this.state.mojis}
+                 Decimal={this.state.Decimal}
+                 temp={this.state.temp}
+                 result={this.state.result}
+            /> 
         </View>
       );
     }
 }
-class Node extends React.Component{
-    constructor(props){
-        super(props);
-    }
-    render(){
-    return(
-    <View style={styles.Row}>
-    {
-        this.props.array.map((value,index)=>{
-         console.log(this.props.action)
-            return(
-            <View style={styles.node} key={index}>
-            <ImageBackground  source={require (Circle)} style={styles.CircleButton}>
-                <View style={styles.text}>
-                <Button
-                    onPress={()=>{
-                     this.props.action(value)
-                    }}
-                    title={String(value)}
-                />
-                </View>
-            </ImageBackground>
-            </View>
-        )
-    })
-    }
-    </View>
-    )
-    }
-}
-const styles = StyleSheet.create({
+
+
+export const styles = StyleSheet.create({
     container: {
       flexDirection: 'column',
       flex: 1,
@@ -294,7 +218,8 @@ const styles = StyleSheet.create({
         flex:1.4,
     },
     resultContent:{
-        fontSize:20
+        color:'red',
+        fontSize:100
     },
     rightbutton: {
       flex: 1,
@@ -311,9 +236,9 @@ const styles = StyleSheet.create({
         flexWrap:'wrap',
     },
     Row:{
-        flex:1.1,
+        flex:1.3,
         flexDirection:'row',
-        backgroundColor: 'green',
+        backgroundColor: 'white',
     },
     CircleButton:{
         flex:1,
@@ -330,16 +255,18 @@ const styles = StyleSheet.create({
         flex:1
     },
     node: {
+        borderRadius: Dim /2,
         borderWidth: 2,
-        borderColor: 'green',
+        borderColor: 'black',
         padding: 5,
         flex: 1,
         //justifyContent: 'center',
         //alignItems:'center',
     },
     longnode:{
+        borderRadius: Dim /2,
         borderWidth: 2,
-        borderColor: 'green',
+        borderColor: 'black',
         padding: 5,
         flex: 2,
     },
@@ -352,27 +279,9 @@ const styles = StyleSheet.create({
 });
   
 export class OptCalculator extends React.Component{
-
-
-
     render() {
-
-
-
         return (
-
-
-
           <View/>
-
-
-
         );
-
-
-
     }
-
-
-
 }
