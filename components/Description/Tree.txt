@@ -3,9 +3,19 @@
 |---Drawer:画面遷移
     |
     |---Home:DBとViewer
-    |---Camera
-    |---Calculator 
-    |---...
+    |   |
+    |   |---nodeview
+    |
+    |---camera
+    |---calender
+    |---calculator
+    |   |
+    |   |--Table
+    |
+    |---texts
+    |---router
+    |---weather
+    |---watch
 
 
 ・全コンポーネントのstateにnodeを追加
