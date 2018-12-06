@@ -4,7 +4,7 @@ import {AddNode} from '../home/nodeview.js';
 import BackButton from '../router/BackButton.js'; 
 //import { WSATYPE_NOT_FOUND } from 'constants';
 const Dim = Dimensions.get("window").width/3 -10;
-import {Node,Node4,Table} from './Node'
+import {Table} from './Node'
 
 export class Calculator extends React.Component {
     constructor(props){
@@ -246,9 +246,7 @@ export const styles = StyleSheet.create({
         
     },
     text:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center'
+        fontSize:30,
     },
     ImageBackground:{
         padding: 5,
@@ -260,8 +258,8 @@ export const styles = StyleSheet.create({
         borderColor: 'black',
         padding: 5,
         flex: 1,
-        //justifyContent: 'center',
-        //alignItems:'center',
+        justifyContent: 'center',
+        alignItems:'center',
     },
     longnode:{
         borderRadius: Dim /2,
@@ -269,12 +267,16 @@ export const styles = StyleSheet.create({
         borderColor: 'black',
         padding: 5,
         flex: 2,
+        justifyContent: 'center',
+        alignItems:'center',
     },
     Nodestyle: {
         flex: 1,
         backgroundColor: 'gray',
         borderRadius: 10,
         borderWidth: 1,
+        justifyContent: 'center',
+        alignItems:'center',
     },
 });
   

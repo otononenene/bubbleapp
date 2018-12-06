@@ -23,6 +23,14 @@ export class TextView extends React.Component{
         }
     }
 
+    _changeTitle = (index)=>{
+        <TextInput
+            value={this.state.title[index]}
+            multiline　blurOnSubmit={false}
+            onChangeText={()=>{this.setState({title: this.state.title})}}
+        />
+    }
+
     render(){
         return(
             <View style={styles.container}>
@@ -79,13 +87,12 @@ export class TextView extends React.Component{
                     tabBarPosition={"top"}
                     onScroll={this._changeCOlor}
                     tabBarBackgroundColor={""}
+                    onChangeTab={(index,ref)=>{this._changeTitle(index)}}
                 >
                     {
                         this.state.title.map((value,index)=>{
                             return(
-                            <View key={index} tabLabel={value}>
-                                <Memo/>
-                            </View>
+                                <Memo key={index} tabLabel={value}/>
                             )
                         })
                     }
@@ -97,15 +104,28 @@ export class TextView extends React.Component{
 }
 
 export class Memo extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            inputvalue: 'メモメモ!!'
+        }
+    }
+
     static navigationOptions = {
         header: null,
         //title: 'Home',
         //headerLeft: () => <DrawerButton/>,
     };
+
     render() {
         return (
           <View>
-              <TextInput>dadasd</TextInput>
+              <TextInput
+                value={this.state.inputvalue}
+                multiline　blurOnSubmit={false}
+                onChangeText={this._changeText}
+              />
+
           </View>
         );
     }

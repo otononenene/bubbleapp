@@ -1,7 +1,8 @@
 import React from 'React';
-import {View, ImageBackground,Button,Text } from 'react-native'
+import {View, ImageBackground,Button,Text, TouchableOpacity } from 'react-native'
 const Circle='./circle.png';
-import {styles} from './calculator'
+import {styles} from './calculator';
+
 export  class Node extends React.Component{
     constructor(props){
         super(props);
@@ -14,14 +15,18 @@ export  class Node extends React.Component{
                         console.log(this.props.action)
                         return(
                             <View style={styles.node} key={index}>
-                                    <View style={styles.text}>
-                                        <Button
+                                    
+                                        <TouchableOpacity
                                             onPress={()=>{
-                                                this.props.action(value)
+                                                this.props.action(value);
                                             }}
-                                            title={String(value)}
-                                        />
-                                    </View>
+                                        >
+                                            <Text
+                                                style={styles.text}
+                                            >{String(value)}</Text>
+                                        </TouchableOpacity>
+                                        
+                                    
                             </View>
                         )
                     })
@@ -45,7 +50,7 @@ export class Table extends React.Component{
                 <Node array={this.props.mojis[0]} action={this.props.action.bind(this)}/>
                 <Node array={this.props.mojis[1]} action={this.props.action.bind(this)}/>
                 <Node array={this.props.mojis[2]} action={this.props.action.bind(this)}/>
-                <Node array={this.props.mojis[3]} action={this.props.action.bind(this)}/>   
+                <Node array={this.props.mojis[3]} action={this.props.action.bind(this)}/>
                 <Node4 array={this.props.mojis[4]} loading={this.props.action.bind(this)}/>
             </View>
         )
@@ -81,17 +86,13 @@ export class Calbutton extends React.Component {
     render(){
         return(
             <View style={this.props.style}>
-                <View style={styles.text}>
-                    <Button
-                        onPress={()=>{
-                            this.props.loading(this.props.moji)   
-                        }}
-                        title={String(this.props.moji)}
-                    /> 
-                </View>
+                <Button
+                    onPress={()=>{
+                        this.props.loading(this.props.moji)   
+                    }}
+                    title={String(this.props.moji)}
+                /> 
             </View>
         )
     }
 }
-
-
