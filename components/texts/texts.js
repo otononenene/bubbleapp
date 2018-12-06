@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet, StatusBar,} from 'react-native';
+import {Text, View, StyleSheet, StatusBar,TextInput} from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import {List} from '../list/list.js';
 import {AddNode} from '../home/nodeview.js';
@@ -9,6 +9,8 @@ export class TextView extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            title:['メモ1','メモ2',],
+            n:3,
             node: {
                 index: 0,
                 name: 'Cthul',
@@ -44,8 +46,20 @@ export class TextView extends React.Component{
                             <AddNode
                                 style={styles.Nodestyle}
                                 Title='追加'
-                                onPress={()=>{}}
-                                onLongPress={()=>{}}
+                                onPress={()=>{
+                                    this.state.title.push('メモ'+String(this.state.n))
+                                    this.setState({
+                                        n:this.state.n+1
+                                    })
+
+                                }}
+                                onLongPress={()=>{
+                                    alert('初期化しました(-ω-)')
+                                    this.setState({
+                                        n:3,
+                                        title:['メモ１','メモ2']
+                                    })
+                                }}
                                 NodeName='text'
                                 NodeOption={this.state.node.option}
                             />
@@ -57,6 +71,7 @@ export class TextView extends React.Component{
             </View>
     
             {/*フィールドエリア*/}
+            
             <View style={styles.table}>
     
                 {/*タブエリア*/}
@@ -65,11 +80,15 @@ export class TextView extends React.Component{
                     onScroll={this._changeCOlor}
                     tabBarBackgroundColor={""}
                 >
-    
-                    {/*Picture*/}
-                    <Texts tabLabel='メモ帳' />
-                    {/*Option*/}
-                    <Option tabLabel='設定'/>
+                    {
+                        this.state.title.map((value,index)=>{
+                            return(
+                            <View key={index} tabLabel={value}>
+                                <Memo/>
+                            </View>
+                            )
+                        })
+                    }
                 </ScrollableTabView>
             </View>
         </View>
@@ -77,7 +96,7 @@ export class TextView extends React.Component{
     }
 }
 
-export class Texts extends React.Component{
+export class Memo extends React.Component{
     static navigationOptions = {
         header: null,
         //title: 'Home',
@@ -85,23 +104,13 @@ export class Texts extends React.Component{
     };
     render() {
         return (
-          <View/>
+          <View>
+              <TextInput>dadasd</TextInput>
+          </View>
         );
     }
 }
 
-export class Option extends React.Component{
-    static navigationOptions = {
-        header: null,
-        //title: 'Home',
-        //headerLeft: () => <DrawerButton/>,
-    };
-    render() {
-        return (
-          <View/>
-        );
-    }
-}
 
 const styles = StyleSheet.create({
     container: {
