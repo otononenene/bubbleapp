@@ -234,7 +234,7 @@ export const styles = StyleSheet.create({
         flexWrap:'wrap',
     },
     Row:{
-        flex:1.3,
+        flex:1,
         flexDirection:'row',
         backgroundColor: 'white',
     },
@@ -255,6 +255,7 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'black',
         padding: 5,
+        margin:1,
         flex: 1,
         justifyContent: 'center',
         alignItems:'center',
