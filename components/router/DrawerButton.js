@@ -8,7 +8,7 @@ class DrawerButton extends React.Component{
         return(
             <View>
                 <Icon
-                    name="bars"
+                    name="gg"
                     size={45}
                     style={styles.Menu}
                     onPress={()=> {this.props.navigation.toggleDrawer()}}

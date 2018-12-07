@@ -1,88 +1,29 @@
 import React from 'react';
 import {} from 'react-navigation';
-import {Alert, StyleSheet, Button, Text, View, ImageBackground, StatusBar, Dimensions} from 'react-native';
-import {AddNode, NodeView} from './nodeview'
-
+import {Alert, StyleSheet, Button, Text, View, ImageBackground, StatusBar, TouchableOpacity, Dimensions} from 'react-native';
+import {AddNode, NodeView} from './nodeview';
+import {NodeStorage} from '../storage/storage.js';
 import DrawerButton from '../router/DrawerButton';
 
 const Myon = './pictures/Myon.jpg';
+
+const storage = new NodeStorage();
 
 export default class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       node: [
-        {index: 0, name: 'Calculator', size: 1, option: []},
-        {index: 1, name: 'Camera', size: 1, option: []},
-        {index: 2, name: 'Camera', size: 1, option: []},
-        {index: 3, name: 'Camera', size: 1, option: []},
-        {index: 4, name: 'Camera', size: 1, option: []},
-        {index: 5, name: 'Camera', size: 1, option: []},
       ],
+      set: true,
+      select: 0,
       nowNodeKey: null,
     };
-  }
+    this.tmp = [{index: 0, name: 'Calculator', size: 1, option: []},];
 
-  changeSize = () => {
-    if(this.state.index%3 == 0){
-      return 1;
-    }
-    return 1;
-  }
-
-  _addNode = (name, option) => {
-    const node = this.state.node;
-    const size = this.changeSize();
-
-    if(node.length === 12){
-      return;
-    }
-
-    //追加
-    node.push({
-      index: this.state.index+1,
-      name: name,
-      size: size,
-      option: option,
-    });
-    
-
-    //再描画
-    this.setState({
-      node: node,
-      index: this.state.index+1,
-    })
-  }
-
-  _clearNode = (key) => {
-    const node = this.state.node;
-    if(node.filter((value,index) => {
-      if(value.key == key)
-      node.splice(index, 1);
-    }));
-
-    this.setState({
-      node: node, 
-    });
-  }
-
-  _allclearNode = () => {
-    const node = this.state.node;
-    const length = node.length;
-
-    Alert.alert(
-      'state',
-      'Clear',
-      [
-        {text: 'Ok', onPress: ()=>{}},
-      ],
-      {cancelable: false}
-    );
-
-    for(let count = 0;count<length;count++){
-      node.pop();
-    }
-    this.setState({node: node});
+    //this.state.node = storage.LoadData();
+    //storage.SaveData(this.state.node);
+    //storage.RemoveData();
   }
 
   //ヘッダー設定
@@ -112,6 +53,19 @@ export default class Home extends React.Component {
 
           {/*右ボタン*/}
           <View style={styles.rightbutton}>
+            <TouchableOpacity
+              onPress={()=>{
+                storage.Load(this.state.node);
+                this.setState({true: !this.state.true});
+              }}
+
+              onLongPress={()=>{
+                storage.SaveData(this.state.node);
+                this.setState({node: this.state.node});
+              }}
+            >
+              <Text style={{fontSize: 20}}>load/save</Text>
+            </TouchableOpacity>
           </View>
 
         </View>
@@ -145,6 +99,7 @@ const styles = StyleSheet.create({
   },
   space: {
     flex: 2,
+    flexDirection: 'row',
   },
   rightbutton: {
     flex: 1,

@@ -1,5 +1,7 @@
 import Storage from 'react-native-storage';
 import { AsyncStorage } from 'react-native';
+import React from 'react';
+import {Alert} from 'react-native';
 
 const storage = new Storage({
     size: 1000, //データのサイズ
@@ -7,68 +9,106 @@ const storage = new Storage({
     defaultExpires: 1000 * 3600 * 24,   //キャッシュの期限
     enableCache: true,  //キャッシュを使うかどうか
     sync: {
-
     }
 });
 
-export const SaveBubble = ()=>{storage.save({
-    key: 'BubbleNode',  //unipue
-    data: NodeArray,
-    expires: 1000 * 3600
-});}
-
-export const LoadBubble = (state)=>{storage.load({
-      key: 'Node',
-      id: '1001',
-      autoSync: true,
-      syncInBackground: true,
-    }).then(ret => {
-      //データが見つかったら
-        switch(state){
-            case index:
-                return ret.index;
-            case name:
-                return ret.name;
-            case size:
-                return ret.size;
-            case option:
-                return ret.optipon;
+export class NodeStorage extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
         }
-    })
-    .catch(err => {
-        //データがなかったら
-        return null;
-    });
-}
+        this.tmp = [{
+            index: 0,
+            name: '',
+            size: 1,
+            option: {},
+        },]
+    }
 
-export var NodeArray = {
-    node: [{
-        useNode
-    }],
-}
+    _checkData = () => {
+        node = this._Load();
+        if(node === []){
+            return false;
+        }
+        return true;
+    }
 
-export var useNode = {
-    index: 0,
-    name: 'undefined',
-    size: 1,
-    option: [],
-  };
-  
-export const SaveStatetoVar = ()=>{
-    const node = this.state.node;
+    Load = (nodeArray)=>{
+        if(this._checkData() == false){
+            return;
+        }
+        //load
+        this.tmp = this.LoadData();
+        if(this.tmp.length >= nodeArray.length){
+          this.tmp.map((value, index)=>{
+            nodeArray[index] = value
+          },nodeArray);  
+        }
+        else{
+          const tmplen = this.tmp.length;
+          const nodelen = nodeArray.length;
+          this.tmp.map((value, index)=>{
+            nodeArray[index] = value
+          },nodeArray);
+          
+          for(let count = nodelen-tmplen; count > 0 ;count--){
+            nodeArray.pop();
+          }
+        }
+    }
+    LoadData = () => {
+        this._Load();
+        return this.tmp;
+    }
 
-    useNode.index = node.index;
-    useNode.name = node.name;
-    useNode.size = node.size;
-    useNode.option = node.option;
+    _Load = () => {
+        storage.load({
+            key: 'node',
+            autoSync: true,
+            syncInBackground: true,
+        }).then(ret => {
+            //データがあったら
+            this.tmp = ret;
+        }).catch(err => {
+            this.tmp = [];
+        })
+    }
+
+    SaveData = (nodes) => {
+        this.tmp = nodes;
+        this._Save();
+    }
+
+    _Save = () => {
+        storage.save({
+            key: 'node',
+            data: this.tmp,
+            expires: 1000*60,
+        })
+        Alert.alert(
+            'Saving',
+            'Ok?',
+            [{text: 'yes', onPress: ()=>{return;}}]
+        );
+    }
+
+    RemoveData = () => {
+        this._Remove();
+
+    }
+
+    _Remove = () => {
+        storage.remove({
+            key: 'node',
+        })
+        Alert.alert(
+            'Removing',
+            'Ok?',
+            [{text: 'yes', onPress: ()=>{return;}}]
+        );
+    }
+
+    render(){
+        return;
+    }
 }
-  
-  // get all the "key-id" data under a key
-  // !! important: this does not include "key-only" data
-  storage.getAllDataForKey('user').then(users => {
-    console.log(users);
-  });
-  
-  // clear all "key-id" data under a key
-  // !! important: "key-only" data is not cleared by this function
-  storage.clearMapForKey('user');

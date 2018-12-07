@@ -8,7 +8,7 @@ class BackButton extends React.Component{
         return(
             <View>
                 <Icon
-                    name="home"
+                    name="bars"
                     size={45}
                     style={styles.Menu}
                     onPress={()=> {this.props.navigation.navigate('DrawerHome')}}
