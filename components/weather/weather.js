@@ -5,7 +5,7 @@ import {Prefectures} from './Prefectures';
 import {  Text, View  } from 'react-native';
 import {API_key} from './WeatherAPIKey';
 import {WeatherView,WeatherOption} from './subWeather'
-
+import BackButton from '../router/BackButton'
 export class Weather extends Component {
     constructor(props) {
         super(props);
@@ -61,9 +61,33 @@ export class Weather extends Component {
   render() {
       return(
         <View style={{flex:9}}>
+         <View style={styles.button}>
+                <View style={styles.leftbutton}>
+                    <BackButton/>
+                </View>
+                <View style={styles.space}></View>
+                <View style={styles.rightbutton}>
+                    {(()=>{if(this.state.addFlag === true){
+                        return (
+                            <AddNode
+                                style={styles.Nodestyle}
+                                Title='追加'
+                                onPress={()=>{}}
+                                onLongPress={()=>{}}
+                                NodeName='text'
+                                NodeOption={this.state.node.option}
+                            />
+                        );}
+                        return;
+                    })()}
+                </View>
+            </View>
+        
             <ScrollableTabView
             tabBarPosition={"top"}
-            onScroll={this._changeCOlor}
+            onScroll={
+                this._changeCOlor
+            }
             tabBarBackgroundColor={""}
             >
                 <WeatherView tabLabel="天気予報"
