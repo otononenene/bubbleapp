@@ -10,10 +10,8 @@ export class Calculator extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            inputA:0,//最初の入力　
-            inputB:0,//演算子の決定後の入力
+            Stack:[],
             result:0,//結果
-            loading_number:0,//入力途中の値
             n:0,//入力回数
             Decimal:false,
             temp:10,
@@ -30,7 +28,7 @@ export class Calculator extends React.Component {
                 name: 'Cthul',
                 size: 1,
                 addFlag:true,
-                option: [],
+                option: [{result:0}],
             },
         };
     }
@@ -44,36 +42,33 @@ export class Calculator extends React.Component {
     loading=(value)=>{
         switch(value){
             case 'AC':// all clear key　メモリと入力をすべて消去
-                 this.state.loading_number=0;
                 this.setState({
+                            Stack:[],
                             n:0,
                             temp:10,
-                            loading_number:0,
-                            inputA:0,
-                            inputB:0,
                             operator:null,
-                            result:this.state.loading_number,
+                            result:0,
                             Decimal:false
                 })
                 break;
             case 'C'://clear Key　入力途中の値を消去
                 this.state.mojis[0][0]='AC'
-                this.state.loading_number=0;
+                //this.state.loading_number=0;
+                this.state.Stack.pop();
                 this.setState({
                             n:0,
-                            result:this.state.loading_number
-                
+                            result:0
                 })
                 break;
             case '+/-'://正負の逆転
                 //this.setState({})
-                this.state.loading_number*=-1
+                this.state.Stack[this.state.Stack.length-1]*=-1
                 this.setState({
-                            result:this.state.loading_number
+                            result:this.state.Stack[this.state.Stack.length-1]
                 })
                 break;
             case '%'://百分率
-                this.state.loading_number/=100;
+                this.state.Stack[this.state.Stack.length-1]/=100
                 this.setState({
                             result:this.state.loading_number
                 })
@@ -81,9 +76,7 @@ export class Calculator extends React.Component {
              case '+'://加算
                 this.setState({
                             n:0,
-                            inputA:this.state.loading_number,
                             operator:(a,b)=>{return a+b},
-                            loading_number:0,
                             Decimal:false,
                             result:0,
                             temp:10
@@ -92,9 +85,7 @@ export class Calculator extends React.Component {
             case '-'://減算
                 this.setState({
                             n:0,
-                            inputA:this.state.loading_number,
                             operator:(a,b)=>{return a-b;},
-                            loading_number:0,
                             Decimal:false,
                             result:0,
                             temp:10
@@ -103,9 +94,7 @@ export class Calculator extends React.Component {
             case '×'://乗算    
                 this.setState({
                             n:0,
-                            inputA:this.state.loading_number,
                             operator:(a,b)=>{return a*b},
-                            loading_number:0,
                             Decimal:false,
                             result:0,
                             temp:10
@@ -114,23 +103,27 @@ export class Calculator extends React.Component {
             case '÷'://除算
                 this.setState({
                             n:0,
-                            inputA:this.state.loading_number,
                             operator:(a,b)=>{return a/b},
-                            loading_number:0,
                             Decimal:false,
                             result:0,
                             temp:10
                 })
                 break;
             case '='://二項演算子の計算結果
-                this.state.inputB=this.state.loading_number
+                if(this.state.n==0 || this.state.operator==null)
+                    return;
                 this.setState({
-                            result:this.state.operator(this.state.inputA,this.state.inputB)
+                            result:this.state.operator(this.state.Stack.pop(),this.state.Stack.pop())
                 })
-                this.state.loading_number=this.state.result;
-                this.state.result=0;
-                this.state.inputA=0;
-                this.state.inputB=0;
+                this.state.Stack.push(this.state.result)
+                this.state.Stack.push(0)
+                this.setState({
+                    node:{
+                        option:[
+                            {result:this.state.result}
+                        ]
+                    }
+                })
                 break;
             case '.'://小数点
                 this.setState({
@@ -141,15 +134,18 @@ export class Calculator extends React.Component {
             default://通常入力
                 this.state.mojis[0][0]='C'
                 if(this.state.Decimal==false){
-                    this.state.loading_number=this.state.n>0?
-                    this.state.loading_number*10+value:value
+                    if(this.state.n==0)
+                        this.state.Stack.push(value)
+                    else{
+                        this.state.Stack[this.state.Stack.length-1]=this.state.Stack[this.state.Stack.length-1]*10+value
+                    }
                 }
                 else {
-                    this.state.loading_number=(this.state.loading_number*this.state.temp+value)/this.state.temp
+                    this.state.Stack[this.state.Stack.length-1]=(this.state.Stack[this.state.Stack.length-1]*this.state.temp+value)/this.state.temp
                     this.setState({temp:this.state.temp*10})
                 }
                 this.setState({
-                    result:this.state.loading_number,
+                    result:this.state.Stack[this.state.Stack.length-1],
                 })
                 this.state.n++;
         }
