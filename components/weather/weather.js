@@ -89,6 +89,7 @@ export class Weather extends Component {
                 this._changeCOlor
             }
             tabBarBackgroundColor={""}
+            style={{flex:9.5}}
             >
                 <WeatherView tabLabel="天気予報"
                     placeName={this.state.placeName}
@@ -137,7 +138,31 @@ export const styles=StyleSheet.create({
 
         backgroundColor:'white'
 
+    },button: {
+      marginTop: 20,
+      flex: 1,
+      backgroundColor: 'white',
+      flexDirection: 'row'
     },
+    leftbutton: {
+      flex: 1,
+      backgroundColor: 'pink',
+    },
+    space: {
+      flex: 2,
+    },
+    result:{
+        flex:1.4,
+    },
+    resultContent:{
+        color:'red',
+        fontSize:100
+    },
+    rightbutton: {
+      flex: 1,
+      backgroundColor: 'pink',
+    },
+    
 
     container2:{
 
@@ -156,7 +181,6 @@ export const styles=StyleSheet.create({
     },
 
     title:{
-
         marginTop:20,
 
         fontSize:18,
@@ -168,7 +192,6 @@ export const styles=StyleSheet.create({
     },
 
     picker:{
-
         width:200,
 
         backgroundColor:'#FFF'
@@ -176,7 +199,6 @@ export const styles=StyleSheet.create({
     },
 
     pickerItem:{
-
         color:'blue'
 
     },
