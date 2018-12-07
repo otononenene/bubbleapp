@@ -70,7 +70,7 @@ export class Calculator extends React.Component {
             case '%'://百分率
                 this.state.Stack[this.state.Stack.length-1]/=100
                 this.setState({
-                            result:this.state.loading_number
+                            result:this.state.Stack[this.state.Stack.length-1]
                 })
                 break;
              case '+'://加算
@@ -112,11 +112,13 @@ export class Calculator extends React.Component {
             case '='://二項演算子の計算結果
                 if(this.state.n==0 || this.state.operator==null)
                     return;
+                this.inputA=this.state.Stack.pop()
+                this.inputB=this.state.Stack.pop()
                 this.setState({
-                            result:this.state.operator(this.state.Stack.pop(),this.state.Stack.pop())
+                            n:0,
+                            result:this.state.operator(this.inputB,this.inputA)
                 })
                 this.state.Stack.push(this.state.result)
-                this.state.Stack.push(0)
                 this.setState({
                     node:{
                         option:[
