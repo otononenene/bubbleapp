@@ -30,6 +30,9 @@ export class NodeView extends React.Component{
         return(
             <View style={styles.Viewer}>
                 {this.state.node.map((value,index) => {
+                    if(value === {}){
+                        return;
+                    }
                     return(
                         <View
                             key={String(index)}

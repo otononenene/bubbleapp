@@ -5,26 +5,31 @@ import {List} from '../list/list.js';
 import {AddNode} from '../home/nodeview.js';
 import BackButton from '../router/BackButton.js';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { NodeStorage } from '../storage/storage.js';
+
+const storage = new NodeStorage();
 
 export class CameraView extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            node: {
+            node: [{
                 index: 0,
                 name: 'Cthul',
                 size: 1,
                 option: {
-                    pictures: null,    
+                    pictures: null,
+                    addFlag: true,    
                 },
-            },
+            }],
+            true: true,
             addFlag: true,
         }
+        storage.Load(this.state.node);
     }
 
     _setPhoto = (Photo) => {
         this.setState({photo: Photo});
-        this.setState({key: Date.now()});
     }
 
     render() {
@@ -49,7 +54,10 @@ export class CameraView extends React.Component{
                             <AddNode
                                 style={styles.Nodestyle}
                                 Title='追加'
-                                onPress={()=>{}}
+                                onPress={()=>{
+                                    storage.SaveData(this.state.node);
+                                    this.setState({true: !this.state.true});
+                                }}
                                 onLongPress={()=>{}}
                                 NodeName='text'
                                 NodeOption={this.state.node.option}
