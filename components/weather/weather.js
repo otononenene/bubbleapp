@@ -4,35 +4,31 @@ import {  Button,ScrollView, StyleSheet,Picker } from 'react-native';
 import {Prefectures} from './Prefectures';
 import {  Text, View  } from 'react-native';
 import {API_key} from './WeatherAPIKey';
-import {AddNode} from '../home/nodeview.js';
-import BackButton from '../router/BackButton.js';
-import {List} from '../list/list.js';
+import {WeatherView,WeatherOption} from './subWeather'
 
 export class Weather extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            placeName: null,
+            placeName: Prefectures[1].name,
             weather: null,
             temperature: null,
-            loading: false
+            places:Prefectures,
+            ix:1
         },
-        this.places = Prefectures 
-
-        this.OpenWeatherMapKey = API_key
-        this.place = this.places[0] 
+        this.OpenWeatherMapKey = API_key 
     }
 
     selectPlace(index) {
         if (index > 0) {
-            this.place = this.places[index - 1];
-            this.setState({
-                placeName: this.place.name,
+           this.setState({
+                placeName: this.state.places[index].name,
                 weather: null,
                 temperature: null,
-                loading: true
+                loading: true,
+                ix:index
             })
-            this.getWeather(this.place.id)
+            this.getWeather(this.state.places[index].id)
         }
     }
 
@@ -63,92 +59,47 @@ export class Weather extends Component {
     }
 
   render() {
-    //選択した都道府県の天気予報を表示する画面
-    if(this.state.loading){
-
       return(
-
-        <View style={styles.container2}>
-
-        <Text style={styles.text}>{this.state.placeName}</Text>
-
-        <Text style={styles.text}>{this.state.weather}</Text>
-
-        <Text style={styles.text}>{this.state.temperature}</Text>
-
+        <View style={{flex:9}}>
+            <ScrollableTabView
+            tabBarPosition={"top"}
+            onScroll={this._changeCOlor}
+            tabBarBackgroundColor={""}
+            >
+                <WeatherView tabLabel="天気予報"
+                    placeName={this.state.placeName}
+                    weather={this.state.weather}
+                    temperature={this.state.temperature}
+                    loading={this.state.loading}
+                    ix={this.state.ix}
+                />
+                <WeatherOption tabLabel="設定"
+                    placeName={this.state.placeName}
+                    weather={this.state.weather}
+                    temperature={this.state.temperature}
+                    loading={this.state.loading}
+                    ix={this.state.ix}
+                    selectPlace={this.selectPlace.bind(this)}
+                    getWeather={this.getWeather.bind(this)}
+                />
+            </ScrollableTabView>
         </View>
-
       )
-
-    }
-    //都道府県を選択する画面   
-
-    else{
-
-    return (
-
-    <View style={styles.container}>
-
-        <Text style={styles.title}>
-
-            { '天気情報'}
-
-        </Text>
-
-        <Picker style={[styles.picker]} 
-
-            itemStyles={styles.pickerItem}
-
-            onValueChange={(selectItem)=>{this.selectPlace(selectItem+1)}  }
-
-            selectedValue={this.place.id}
-
-        >
-
-                {this.places.map((place, ix) => <Picker.Item key={ix} value={ix} label={place.name} />)}       
-
-        </Picker>
-        <Button
-            title="選択"
-            onPress={()=>this.getWeather(this.place.id)}
-        />
-    </View>
-
-        );
-
       }
-
-    }
 
 }
 
 export class OptWeather extends React.Component{
-
-
-
     render() {
-
-
-
         return (
-
-
-
           <View/>
-
-
-
         );
-
-
-
     }
-
-
-
 }
 
-const styles=StyleSheet.create({
+
+
+export const styles=StyleSheet.create({
 
     container:{
 
